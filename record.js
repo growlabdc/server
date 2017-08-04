@@ -6,7 +6,7 @@ const io = require('socket.io')(http)
 const SerialPort = require('serialport');
 const parsers = SerialPort.parsers;
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8080
 const PERIOD_INTERVAL = 1000 * 60
 
 let period_start = new Date()
