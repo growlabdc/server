@@ -1,0 +1,28 @@
+{
+  "name": "growlab",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.15.3",
+    "grunt": "^1.0.1",
+    "logplease": "^1.2.13",
+    "moment": "^2.18.1",
+    "serialport": "^5.0.0",
+    "socket.io": "^2.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krahimian/growlab.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/krahimian/growlab/issues"
+  },
+  "homepage": "https://github.com/krahimian/growlab#readme"
+}
