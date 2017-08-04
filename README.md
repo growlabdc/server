@@ -25,7 +25,7 @@ Valves
 - drain valve
 - fill valve
 
-1 Wire Temperatue Probe
+1 Wire Temperature Probe
 - 28-0116213619ee (Bucket 4)
 - 28-01162144aeee (Bucket 1)
 - 28-011621457bee (Bucket 3)
