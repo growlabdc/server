@@ -2,6 +2,7 @@
 
 const config = require('./config')
 
+const path = require('path')
 const app = require('express')()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
@@ -21,11 +22,15 @@ const serialport = new SerialPort('/dev/ttyACM0', {
 app.use('/api', api)
 
 app.get('/', (req, res) => {
-  res.sendFile('client/dist/index.html')
+  res.sendFile(path.resolve('client/dist/index.html'))
 })
 
 http.listen(PORT, () => {
   console.log(`listening on *:${PORT}`);
+})
+
+io.on('connection', (socket) => {
+  console.log('a user connected')
 })
 
 serialport.pipe(serial)
