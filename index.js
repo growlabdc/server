@@ -21,7 +21,7 @@ const serialport = new SerialPort('/dev/ttyACM0', {
 app.use('/api', api)
 
 app.get('/', (req, res) => {
-  res.send('OK')
+  res.sendFile('client/dist/index.html')
 })
 
 http.listen(PORT, () => {
