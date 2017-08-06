@@ -1,15 +1,6 @@
-/*
- # This sample code is used to test the pH meter V1.0.
- # Editor : YouYou
- # Ver    : 1.0
- # Product: analog pH meter
- # SKU    : SEN0161
-*/
-
 // TSL2591 libraries
 #include <Wire.h>
 #include "Adafruit_TSL2591.h"
-
 
 // DHT Libraries
 #include <DHT.h>;
@@ -23,28 +14,28 @@
 #define ONE_WIRE_BUS 4
 
 // DHT Constants
-#define DHTPIN 7     // what pin we're connected to
-#define DHTTYPE DHT22   // DHT 22  (AM2302)
+#define DHTPIN 7
+#define DHTTYPE DHT22
 
 // Ultrasonic constants
 const int trigPin = 9;
 const int echoPin = 10;
 
 // PH Constants
-#define SensorPin A0            //pH meter Analog output to Arduino Analog Input 0
-#define Offset 0.00            //deviation compensate
+#define SensorPin A0
+#define Offset 0.00 //deviation compensate
 #define LED 13
 #define samplingInterval 20
 #define printInterval 800
-#define ArrayLenth  40    //times of collection
+#define ArrayLenth  40 //times of collection
 
 // DHT variables
 int chk;
-float hum;  //Stores humidity value
-float temp; //Stores temperature value
+float hum;  //stores humidity value
+float temp; //stores temperature value
 
 // PH variables 
-int pHArray[ArrayLenth];   //Store the average value of the sensor feedback
+int pHArray[ArrayLenth]; //store the average value of the sensor feedback
 int pHArrayIndex=0;
 
 // ultrasonic variables
@@ -81,14 +72,11 @@ void setup(void)
 
   configureSensor(); //TSL2591
   
-  // Start up the library 
-  sensors.begin(); 
+  sensors.begin(); // 1wire sensors
   dht.begin();
   
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
-  
-  Serial.println("pH meter experiment!");    //Test the serial monitor
 }
 
 void loop(void)
@@ -110,14 +98,13 @@ void loop(void)
     temp= dht.readTemperature();
     //Print temp and humidity values to serial monitor
     Serial.print("Humidity: ");
-    Serial.print(hum);
-    Serial.print(" %, Temp: ");
-    Serial.print(temp);
-    Serial.println(" Celsius");
+    Serial.println(hum);
+    Serial.print("Temperature: ");
+    Serial.println(temp);
     
-    Serial.print("Voltage:");
-    Serial.print(voltage,2);
-    Serial.print("    pH value: ");
+    Serial.print("Voltage: ");
+    Serial.println(voltage,2);
+    Serial.print("pH: ");
     Serial.println(pHValue,2);
 
     sensors.requestTemperatures(); // Send the command to get temperature readings
@@ -202,10 +189,9 @@ void advancedRead(void)
   uint16_t ir, full;
   ir = lum >> 16;
   full = lum & 0xFFFF;
-  Serial.print(F("[ ")); Serial.print(millis()); Serial.print(F(" ms ] "));
-  Serial.print(F("IR: ")); Serial.print(ir);  Serial.print(F("  "));
-  Serial.print(F("Full: ")); Serial.print(full); Serial.print(F("  "));
-  Serial.print(F("Visible: ")); Serial.print(full - ir); Serial.print(F("  "));
+  Serial.print(F("IR: ")); Serial.println(ir);
+  Serial.print(F("Full: ")); Serial.println(full);
+  Serial.print(F("Visible: ")); Serial.println(full - ir);
   Serial.print(F("Lux: ")); Serial.println(tsl.calculateLux(full, ir));
 }
 

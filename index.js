@@ -1,67 +1,44 @@
-const water_temperature = null
-const humidity = null
-const PH = null
+'use strict'
 
-const air_pump_on = null
-const resevoir_pump_on = null
-const AC_on = null
-const exhaust_on = null
-const drain_pump_on = null
-const light_on = null
+const config = require('./config')
 
-if (ambient_temperature >= 77) {
-  // turn AC on
-  // turn exhaust off
+const app = require('express')()
+const http = require('http').Server(app)
+const io = require('socket.io')(http)
+const SerialPort = require('serialport')
 
-  if (ambient_temperature > 80) {
-    // send notification
-  }
+const serialParser = require('./utils/serial_parser')
+const api = require('./api')
+const db = require('./db')
 
-} else if (ambient_temperature >= 76) {
-  // turn exhaust on
-} else {
-  // turn AC off
-  // turn exhaust off
-}
+const PORT = process.env.PORT || config.port || 8080
 
-if (water_temperature > 72) {
-  // send notification
-}
+const serial = new SerialPort.parsers.Readline({ delimiter: '\r\n' })
+const serialport = new SerialPort('/dev/ttyACM0', {
+  baudRate: 9600
+})
 
+app.use('/api', api)
 
-// light schedule
-switch(GROW_STAGE) {
-  case 'VEGATATIVE':
-    // 18-4
-    break;
+app.get('/', (req, res) => {
+  res.send('OK')
+})
 
-  case 'FLOWERING':
-    // 12-12
-    break;
+http.listen(PORT, () => {
+  console.log(`listening on *:${PORT}`);
+})
 
-  default:
-    // error
-    break;
-}
+serialport.pipe(serial)
 
-if (draining || filling) {
-  // turn air_pump off
-  // turn resevoir pump off
-} else if (growing || dosing) {
-  // turn air_pump on
-  // turn resevoir pump on
-}
+serialport.on('open', () => console.log('Port open'))
 
-if (draining) {
-  // turn drain pump on
-  // turn drain valve on
-} else {
-  // turn drain pump off
-  // turn drain valve off
-}
+serial.on('data', (message) => {
+  const item = serialParser(message)
+  console.log(item)
 
-if (filling) {
-  // turn water filter valve on
-} else {
-  // turn water filter valve off
-}
+  if (!item.type)
+    return
+
+  io.sockets.emit(item.data.key, item.data.value)
+  db.recorder(item.data.key)(item.data.value)
+})
