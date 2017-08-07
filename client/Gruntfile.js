@@ -66,7 +66,7 @@ module.exports = function(grunt) {
       vendor: {
 	files: {
 	  'tmp/vendor.js': [
-	    'node_modules/dat-js/dat.min.js'
+	    'modules/request.js'
 	  ]
 	}
       },
@@ -88,7 +88,7 @@ module.exports = function(grunt) {
   grunt.registerTask('base', [
     'clean',
     'stylus',
-    'browserify',
+    'concat',
     'jade'
   ])
 

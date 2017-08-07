@@ -1,8 +1,225 @@
 <!DOCTYPE html><html><head><title>grow lab</title><style>html{background:#080808;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica Nueue,Arial,sans-serif}
-.section-container{background:#080808;display:-webkit-box;display:-moz-box;display:-webkit-flex;display:-ms-flexbox;display:box;display:flex;-webkit-box-orient:horizontal;-moz-box-orient:horizontal;-o-box-orient:horizontal;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-box-lines:single;-moz-box-lines:single;-o-box-lines:single;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;-ms-flex-line-pack:start;-webkit-align-content:flex-start;align-content:flex-start;-webkit-box-pack:space-evenly;-moz-box-pack:space-evenly;-o-box-pack:space-evenly;-ms-flex-pack:space-evenly;-webkit-justify-content:space-evenly;justify-content:space-evenly}.section-vertical{-webkit-box-orient:vertical;-moz-box-orient:vertical;-o-box-orient:vertical;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column}section{background:#272727;-webkit-box-flex:1;-moz-box-flex:1;-o-box-flex:1;box-flex:1;-webkit-flex:1 1 20%;-ms-flex:1 1 20%;flex:1 1 20%;margin:2px;min-height:100px;color:#fff;text-align:center}.section-main{font-size:3em;margin:1em 0}</style></head><body><div class="section-container"><section class="section-container section-vertical"><section><div class="section-main">Seedling (Week 1)</div><div class="section-meta">Started at</div><div class="section-meta">Time Left</div></section><section><div class="section-main">Germinating</div><div class="section-meta">Started At</div><div class="section-meta">Time Left</div></section></section><section><div class="section-main">75°</div><div class="section-secondary">Humidity: 55%</div><div class="section-secondary">AC: Off</div><div class="section-secondary">Exhaust: On</div><div class="section-secondary">CO2: ??</div></section><section class="section-container section-vertical"><section><div class="section-main">68°</div></section><section><div class="section-main">6.2</div></section></section></div><div class="section-container"><section><div class="section-main">60,000</div><div class="section-secondary">Light: On</div></section><section><div class="section-main">30</div><div class="section-secondary">PPM</div></section></div></body><script src="/socket.io/socket.io.js">               </script><script>
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+.section-container{background:#080808;display:-webkit-box;display:-moz-box;display:-webkit-flex;display:-ms-flexbox;display:box;display:flex;-webkit-box-orient:horizontal;-moz-box-orient:horizontal;-o-box-orient:horizontal;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-box-lines:single;-moz-box-lines:single;-o-box-lines:single;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;-ms-flex-line-pack:start;-webkit-align-content:flex-start;align-content:flex-start;-webkit-box-pack:space-evenly;-moz-box-pack:space-evenly;-o-box-pack:space-evenly;-ms-flex-pack:space-evenly;-webkit-justify-content:space-evenly;justify-content:space-evenly}.section-vertical{-webkit-box-orient:vertical;-moz-box-orient:vertical;-o-box-orient:vertical;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column}section{background:#272727;-webkit-box-flex:1;-moz-box-flex:1;-o-box-flex:1;box-flex:1;-webkit-flex:1 1 20%;-ms-flex:1 1 20%;flex:1 1 20%;margin:2px;min-height:100px;color:#fff;text-align:center}.section-main{font-size:3em;margin:1em 0}</style></head><body><div class="section-container"><section class="section-container section-vertical"><section><div class="section-main">Seedling (Week 1)</div><div class="section-meta">Started at</div><div class="section-meta">Time Left</div></section><section><div class="section-main">Germinating</div><div class="section-meta">Started At</div><div class="section-meta">Time Left</div></section></section><section><div id="tent-temperature" class="section-main">??</div><div id="tent-humidity" class="section-secondary">??</div><div id="ac-status" class="section-secondary"> </div><div id="exhaust-status" class="section-secondary"></div></section><section class="section-container section-vertical"><section><div id="reservoir-temperature" class="section-main">??</div></section><section><div id="reservoir-ph" class="section-main">??</div></section></section></div><div class="section-container"><section><div id="tent-illuminance" class="section-main">??</div><div id="light-status" class="section-secondary"></div><div id="tent-full-spectrum" class="section-secondary"></div><div id="tent-infrared-spectrum" class="section-secondary"></div><div id="tent-visible-spectrum" class="section-secondary"></div></section><section><div id="reservoir-water-level" class="section-main">??</div><div id="drain-pump-status" class="section-secondary"></div><div id="drain-valve-status" class="section-secondary"></div><div id="fill-valve-status" class="section-secondary"></div><div id="grow-system-pumps-status" class="section-secondary"></div></section></div></body><script src="/socket.io/socket.io.js"></script><script>
+/* global ActiveXObject, XMLHttpRequest */
+
+(function (root, factory) {
+
+  root.Request = factory(root);
+
+})(this, function (root) {
+
+  'use strict';
+
+  function buildParams(prefix, obj, add) {
+    var name, i, l, rbracket;
+    rbracket = /\[\]$/;
+    if (obj instanceof Array) {
+      for (i = 0, l = obj.length; i < l; i++) {
+	if (rbracket.test(prefix)) {
+	  add(prefix, obj[i]);
+	} else {
+	  buildParams(prefix + ( typeof obj[i] === 'object' ? ('[' + i + ']') : '' ), obj[i], add);
+	}
+      }
+    } else if (typeof obj == 'object') {
+      // Serialize object item.
+      for (name in obj) {
+	buildParams(prefix + '[' + name + ']', obj[ name ], add);
+      }
+    } else {
+      // Serialize scalar item.
+      add(prefix, obj);
+    }
+  }
+
+  var objectToQueryString = function (a) {
+    var prefix, s, add, name, r20, output;
+    s = [];
+    r20 = /%20/g;
+    add = function (key, value) {
+      // If value is a function, invoke it and return its value
+      value = ( typeof value == 'function' ) ? value() : ( value == null ? '' : value );
+      s[ s.length ] = encodeURIComponent(key) + '=' + encodeURIComponent(value);
+    };
+    if (a instanceof Array) {
+      for (name in a) {
+	add(name, a[name]);
+      }
+    } else {
+      for (prefix in a) {
+	buildParams(prefix, a[ prefix ], add);
+      }
+    }
+    output = s.join('&').replace(r20, '+');
+    return output;
+  };
+
+  var parse = function (req) {
+    var result;
+    try {
+      result = JSON.parse(req.responseText);
+      result.status = req.status;
+    } catch (e) {
+      result = { text: req.responseText, status: req.status, url: req._url };
+    }
+    return [result, req];
+  };
+
+  var getXHR = function() {
+    if (root.XMLHttpRequest
+	&& (!root.location || 'file:' !== root.location.protocol
+	    || !root.ActiveXObject)) {
+      return new XMLHttpRequest();
+    } else {
+      try { return new ActiveXObject('Microsoft.XMLHTTP'); } catch(e) {}
+      try { return new ActiveXObject('Msxml2.XMLHTTP.6.0'); } catch(e) {}
+      try { return new ActiveXObject('Msxml2.XMLHTTP.3.0'); } catch(e) {}
+      try { return new ActiveXObject('Msxml2.XMLHTTP'); } catch(e) {}
+    }
+    return false;
+  };
+
+  var xhr = function (type, url, data) {
+    var methods = {
+      success: function () {},
+      error: function () {}
+    };
+    var request = getXHR();
+    request._url = url;
+
+    if (!request) throw new Error('unable to detect XHR');
+
+    request.open(type, url, true);
+    request.setRequestHeader('Content-type', 'application/json');
+    request.onreadystatechange = function () {
+      if (request.readyState === 4) {
+	if (request.status === 200) {
+	  methods.success.apply(methods, parse(request));
+	} else {
+	  methods.error.apply(methods, parse(request));
+	}
+      }
+    };
+
+    request.send(JSON.stringify(data));
+    return {
+      success: function (callback) {
+	methods.success = callback;
+	return this;
+      },
+      error: function (callback) {
+	methods.error = callback;
+	return this;
+      }
+    };
+  };
+
+  return {
+    head: function(url) {
+      return xhr('HEAD', url);
+    },
+    get: function(url, data) {
+      if (data) url += '?' + objectToQueryString(data);
+      return xhr('GET', url);
+    },
+    put: function(url, data) {
+      return xhr('PUT', url, data);
+    },
+    post: function(url, data) {
+      return xhr('POST', url, data);
+    },
+    del: function(url, data) {
+      if (data) url += '?' + objectToQueryString(data);
+      return xhr('DELETE', url);
+    }
+  };
+
+});
+
+</script><script>
+(function(root, factory) {
+
+  root.App = factory(root)
+
+})(this, function() {
+
+  'use strict'
+
+  return {
+    api: function(path) {
+      path = '/api' + path
+      return {
+	get: function(params) {
+	  params = params || {}
+	  return Request.get(path, params)
+	},
+	put: function(params) {
+	  return Request.put(path, params)
+	},
+	post: function(params) {
+	  return Request.post(path, params)
+	},
+	del: function(params) {
+	  params = params || {}
+	  return Request.del(path, params)
+	}
+      }
+    },
+    status: function(value) {
+      return value ? 'On' : 'Off'
+    }
+  }
+})
+
 var socket = io()
 
-},{}]},{},[1]);
+socket.on('bucket.5.temperature', (value) => {
+  //TODO: evaluate range
+  document.querySelector('#reservoir-temperature').innerHTML = value + '°C'
+})
+
+socket.on('reservoir.ph', (value) => {
+  document.querySelector('#reservoir-ph').innerHTML = value
+})
+
+socket.on('tent.humidity', (value) => {
+  document.querySelector('#tent-humidity').innerHTML = value + '%'
+})
+
+socket.on('tent.temperature', (value) => {
+  document.querySelector('#tent-temperature').innerHTML = value + '°C'
+})
+
+socket.on('reservoir.water_level', (value) => {
+  document.querySelector('#reservoir-water-level').innerHTML = value + 'cm'
+})
+
+socket.on('tent.infrared_spectrum', (value) => {
+  document.querySelector('#tent-infrared-spectrum').innerHTML = value
+})
+
+socket.on('tent.full_spectrum', (value) => {
+  document.querySelector('#tent-full-spectrum').innerHTML = value
+})
+
+socket.on('tent.visible_spectrum', (value) => {
+  document.querySelector('#tent-visible-spectrum').innerHTML = value
+})
+
+socket.on('tent.illuminance', (value) => {
+  document.querySelector('#tent-illuminance').innerHTML = value + ' Lux'
+})
+
+App.api('/status').get().success((value) => {
+  document.querySelector('#ac-status').innerHTML = App.status(value)
+  document.querySelector('#light-status').innerHTML = App.status(value)
+  document.querySelector('#exhaust-status').innerHTML = App.status(value)
+  document.querySelector('#drain-valve-status').innerHTML = App.status(value)
+  document.querySelector('#fill-valve-status').innerHTML = App.status(value)
+  document.querySelector('#drain-pump-status').innerHTML = App.status(value)
+  document.querySelector('#grow-system-pumps-status').innerHTML = App.status(value)
+}).error((err) => {
+  console.log(err)
+})
 
 </script></html>
