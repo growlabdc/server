@@ -66,7 +66,8 @@ module.exports = function(grunt) {
       vendor: {
 	files: {
 	  'tmp/vendor.js': [
-	    'modules/request.js'
+	    'modules/request.js',
+	    'modules/element.js'
 	  ]
 	}
       },

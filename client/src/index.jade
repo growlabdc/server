@@ -7,37 +7,40 @@ html
     body
         .section-container
             section.section-container.section-vertical
-                section
+                section(data-label='Stage')
                     .section-main Seedling (Week 1)
-                    .section-meta Started at
-                    .section-meta Time Left
-                section
+                section(data-label='System State')
                     .section-main Germinating
-                    .section-meta Started At
-                    .section-meta Time Left
-            section
+            section(data-label='Tent')
                 #tent-temperature.section-main ??
-                #tent-humidity.section-secondary ??
-                #ac-status.section-secondary
-                #exhaust-status.section-secondary
+                #tent-humidity.section-main ??
+                .section-meta
+                    #ac-status(data-label='AC:') ?? 
+                    #exhaust-status(data-label='Exhaust:') ?? 
             section.section-container.section-vertical
-                section
+                section(data-label='Reservoir Temperature')
                     #reservoir-temperature.section-main ??
-                section
+                section(data-label='Reservoir PH')
                     #reservoir-ph.section-main ??
         .section-container
-            section
+            section(data-label='Light')
                 #tent-illuminance.section-main ??
-                #light-status.section-secondary
-                #tent-full-spectrum.section-secondary
-                #tent-infrared-spectrum.section-secondary
-                #tent-visible-spectrum.section-secondary
-            section
+                .section-meta
+                    #light-status(data-label='Light:') ??
+                .section-meta-alt
+                    span#tent-full-spectrum Full: ??
+                    span#tent-infrared-spectrum IR: ??
+                    span#tent-visible-spectrum Visible: ??
+            section(data-label='Water')
                 #reservoir-water-level.section-main ??
-                #drain-pump-status.section-secondary
-                #drain-valve-status.section-secondary
-                #fill-valve-status.section-secondary
-                #grow-system-pumps-status.section-secondary
+                .section-meta
+                    #drain-pump-status(data-label='Drain Pump:') ??
+                    #drain-valve-status(data-label='Drain Valve:') ??
+                    #fill-valve-status(data-label='Fill Valve:') ??
+                    #grow-system-pumps-status(data-label='System Pumps:') ??
+        .section-container
+            section(data-label='Log')
+                #log
     script(src='/socket.io/socket.io.js')
     script(src='vendor.js?__inline=true')
     script(src='app.js?__inline=true')

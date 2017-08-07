@@ -13,12 +13,41 @@
     flex-direction column
 
 section
-    background $section-background
-    flex 1 1 20%
-    margin 2px
+    position relative
+    border 1px solid $alt
+    flex 1 1 30%
+    margin 10px
     min-height 100px
     color white
     text-align center
+    &.section-container
+        border none
+        margin 0
+
+    &:before
+        absolute top -15px left 10px
+        content attr(data-label)
+        background $background
+        color $alt
+        padding 5px
+
+.section-meta
+    absolute bottom 5px right 5px
+
+    div
+        position relative
+
+    div:before
+        color $alt
+        content attr(data-label)
+        absolute left -150px
+        width 145px
+        text-align right
+
+.section-meta-alt
+    absolute bottom 5px left 5px
+    span + span
+        margin-left 10px
 
 .section-main
     font-size 3em
