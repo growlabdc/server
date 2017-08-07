@@ -11,9 +11,12 @@ html
                     .section-main Seedling (Week 1)
                 section(data-label='System State')
                     .section-main Germinating
+                    #log
             section(data-label='Tent')
                 #tent-temperature.section-main ??
+                #tent-temperature-chart
                 #tent-humidity.section-main ??
+                #tent-humidity-chart
                 .section-meta
                     #ac-status(data-label='AC:') ?? 
                     #exhaust-status(data-label='Exhaust:') ?? 
@@ -22,9 +25,11 @@ html
                     #reservoir-temperature.section-main ??
                 section(data-label='Reservoir PH')
                     #reservoir-ph.section-main ??
+                    #reservoir-ph-chart
         .section-container
             section(data-label='Light')
                 #tent-illuminance.section-main ??
+                #tent-illuminance-chart
                 .section-meta
                     #light-status(data-label='Light:') ??
                 .section-meta-alt
@@ -33,14 +38,12 @@ html
                     span#tent-visible-spectrum Visible: ??
             section(data-label='Water')
                 #reservoir-water-level.section-main ??
+                #reservoir-water-level-chart
                 .section-meta
                     #drain-pump-status(data-label='Drain Pump:') ??
                     #drain-valve-status(data-label='Drain Valve:') ??
                     #fill-valve-status(data-label='Fill Valve:') ??
                     #grow-system-pumps-status(data-label='System Pumps:') ??
-        .section-container
-            section(data-label='Log')
-                #log
     script(src='/socket.io/socket.io.js')
     script(src='vendor.js?__inline=true')
     script(src='app.js?__inline=true')

@@ -3,7 +3,7 @@ var socket = io()
 socket.on('bucket.5.temperature', (value) => {
   //TODO: evaluate range
   document.querySelector('#reservoir-temperature').innerHTML = value + '°C'
-  App.Log('info', 'bucket.5.temperature', value)
+  App.log('info', 'bucket.5.temperature', value)
 })
 
 socket.on('reservoir.ph', (value) => {
@@ -57,3 +57,83 @@ App.api('/status').get().success((value) => {
 }).error((err) => {
   console.log(err)
 })
+
+d3.json('/api/tent/temperature', function(data) {
+  data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
+  MG.data_graphic({
+    data: data,
+    full_width: true,
+    height: 150,
+    area: false,
+    right: 40,
+    target: document.getElementById('tent-temperature-chart'),
+    missing_is_hidden: true,
+    show_tooltips: false,
+    x_accessor: 'timestamp',
+    y_accessor: 'value'
+  });
+});
+
+d3.json('/api/tent/humidity', function(data) {
+  data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
+  MG.data_graphic({
+    data: data,
+    full_width: true,
+    height: 150,
+    area: false,
+    right: 40,
+    target: document.getElementById('tent-humidity-chart'),
+    missing_is_hidden: true,
+    show_tooltips: false,
+    x_accessor: 'timestamp',
+    y_accessor: 'value'
+  });
+});
+
+d3.json('/api/reservoir/water_level', function(data) {
+  data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
+  MG.data_graphic({
+    data: data,
+    full_width: true,
+    height: 150,
+    area: false,
+    right: 40,
+    target: document.getElementById('reservoir-water-level-chart'),
+    missing_is_hidden: true,
+    show_tooltips: false,
+    x_accessor: 'timestamp',
+    y_accessor: 'value'
+  });
+});
+
+d3.json('/api/reservoir/ph', function(data) {
+  data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
+  MG.data_graphic({
+    data: data,
+    full_width: true,
+    height: 150,
+    area: false,
+    right: 40,
+    target: document.getElementById('reservoir-ph-chart'),
+    missing_is_hidden: true,
+    show_tooltips: false,
+    x_accessor: 'timestamp',
+    y_accessor: 'value'
+  });
+});
+
+d3.json('/api/tent/illuminance', function(data) {
+  data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
+  MG.data_graphic({
+    data: data,
+    full_width: true,
+    height: 150,
+    area: false,
+    right: 40,
+    target: document.getElementById('tent-illuminance-chart'),
+    missing_is_hidden: true,
+    show_tooltips: false,
+    x_accessor: 'timestamp',
+    y_accessor: 'value'
+  });
+});
