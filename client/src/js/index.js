@@ -58,6 +58,22 @@ App.api('/status').get().success((data) => {
   console.log(err)
 })
 
+d3.json('/api/bucket/5/temperature', function(data) {
+  data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
+  MG.data_graphic({
+    data: data,
+    full_width: true,
+    height: 150,
+    area: false,
+    right: 40,
+    target: document.getElementById('reservoir-temperature-chart'),
+    missing_is_hidden: true,
+    show_tooltips: false,
+    x_accessor: 'timestamp',
+    y_accessor: 'value'
+  });
+});
+
 d3.json('/api/tent/temperature', function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
   MG.data_graphic({
