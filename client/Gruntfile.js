@@ -67,7 +67,9 @@ module.exports = function(grunt) {
 	files: {
 	  'tmp/vendor.js': [
 	    'modules/request.js',
-	    'modules/element.js'
+	    'modules/element.js',
+	    'node_modules/d3/build/d3.min.js',
+	    'node_modules/metrics-graphics/dist/metricsgraphics.min.js'
 	  ]
 	}
       },
