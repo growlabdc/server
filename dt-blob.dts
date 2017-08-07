@@ -1162,6 +1162,8 @@
                startup_state = "inactive";
                function = "input";
             }; // pin
+            pin@p5 { function = "output"; polarity = "active_low"; startup_state = "inactive"; termination = "pull_up"; };
+            pin@p6 { function = "output"; polarity = "active_low"; startup_state = "inactive"; termination = "pull_up"; };
             pin@p12 { function = "output"; polarity = "active_low"; startup_state = "inactive"; termination = "pull_up"; };
 	    pin@p13 { function = "output"; polarity = "active_low"; startup_state = "inactive"; termination = "pull_up"; };
 	    pin@p16 { function = "output"; polarity = "active_low"; startup_state = "inactive"; termination = "pull_up"; };
