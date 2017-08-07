@@ -153,21 +153,23 @@ router.get('/tent/illuminance', function(req, res) {
   }))
 })
 
+router.get('/status', function(req, res) {
+  const result = {
+    ac: sensors.ac.status(),
+    light: sensors.light.status(),
+    exhaust: sensors.light.status(),
+    drain_valve: sensors.drain_valve.status(),
+    fill_valve: sensors.fill_valve.status(),
+    drain_pump: sensors.drain_pump.status(),
+    grow_system_pumps: sensors.grow_system_pumps.status()
+  }
+
+  res.status(200).json(result)
+})
+
 module.exports = router
 
 
 //TODO:  PH UP Dispensing history
 
 //TODO:  PH Down Dispensing history
-
-//TODO:  Light status / history
-
-//TODO:  AC status / history
-
-//TODO:  Exhaust status / history
-
-//TODO:  Air Pump status / history
-
-//TODO:  Resevoir Pump status / history
-
-//TODO:  Drain Pump status / history

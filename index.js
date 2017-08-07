@@ -8,11 +8,14 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const SerialPort = require('serialport')
 
+const sensors = require('./utils/sensors')
 const serialParser = require('./utils/serial_parser')
 const api = require('./api')
 const db = require('./db')
 
 const PORT = process.env.PORT || config.port || 8080
+
+sensors.setup()
 
 const serial = new SerialPort.parsers.Readline({ delimiter: '\r\n' })
 const serialport = new SerialPort('/dev/ttyACM0', {

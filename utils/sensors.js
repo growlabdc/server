@@ -1,5 +1,7 @@
 const rpio = require('rpio');
 
+rpio.init({ mapping: 'gpio' })
+
 const sensors = {
   setup: function() {
     this.ac.setup()

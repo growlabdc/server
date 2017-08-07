@@ -21,6 +21,5 @@
     "grunt-static-inline": "^0.1.9"
   },
   "dependencies": {
-    "dat-js": "^6.2.0"
   }
 }
