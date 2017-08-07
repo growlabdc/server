@@ -28,6 +28,26 @@
     },
     status: function(value) {
       return value ? 'On' : 'Off'
+    },
+    log: function(type, meta, message) {
+      var parent = document.getElementById('log')
+
+      Elem.create({
+	parent: parent,
+	childs: [{
+	  tag: 'span',
+	  className: type,
+	  text: type
+	}, {
+	  tag: 'span',
+	  text: meta
+	}, {
+	  tag: 'span',
+	  text: message
+	}]
+      })
+
+      parent.scrollTop = parent.scrollHeight
     }
   }
 })

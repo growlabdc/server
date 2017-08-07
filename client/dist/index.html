@@ -1,5 +1,6 @@
 <!DOCTYPE html><html><head><title>grow lab</title><style>html{background:#080808;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica Nueue,Arial,sans-serif}
-.section-container{background:#080808;display:-webkit-box;display:-moz-box;display:-webkit-flex;display:-ms-flexbox;display:box;display:flex;-webkit-box-orient:horizontal;-moz-box-orient:horizontal;-o-box-orient:horizontal;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-box-lines:single;-moz-box-lines:single;-o-box-lines:single;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;-ms-flex-line-pack:start;-webkit-align-content:flex-start;align-content:flex-start;-webkit-box-pack:space-evenly;-moz-box-pack:space-evenly;-o-box-pack:space-evenly;-ms-flex-pack:space-evenly;-webkit-justify-content:space-evenly;justify-content:space-evenly}.section-vertical{-webkit-box-orient:vertical;-moz-box-orient:vertical;-o-box-orient:vertical;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column}section{background:#272727;-webkit-box-flex:1;-moz-box-flex:1;-o-box-flex:1;box-flex:1;-webkit-flex:1 1 20%;-ms-flex:1 1 20%;flex:1 1 20%;margin:2px;min-height:100px;color:#fff;text-align:center}.section-main{font-size:3em;margin:1em 0}</style></head><body><div class="section-container"><section class="section-container section-vertical"><section><div class="section-main">Seedling (Week 1)</div><div class="section-meta">Started at</div><div class="section-meta">Time Left</div></section><section><div class="section-main">Germinating</div><div class="section-meta">Started At</div><div class="section-meta">Time Left</div></section></section><section><div id="tent-temperature" class="section-main">??</div><div id="tent-humidity" class="section-secondary">??</div><div id="ac-status" class="section-secondary"> </div><div id="exhaust-status" class="section-secondary"></div></section><section class="section-container section-vertical"><section><div id="reservoir-temperature" class="section-main">??</div></section><section><div id="reservoir-ph" class="section-main">??</div></section></section></div><div class="section-container"><section><div id="tent-illuminance" class="section-main">??</div><div id="light-status" class="section-secondary"></div><div id="tent-full-spectrum" class="section-secondary"></div><div id="tent-infrared-spectrum" class="section-secondary"></div><div id="tent-visible-spectrum" class="section-secondary"></div></section><section><div id="reservoir-water-level" class="section-main">??</div><div id="drain-pump-status" class="section-secondary"></div><div id="drain-valve-status" class="section-secondary"></div><div id="fill-valve-status" class="section-secondary"></div><div id="grow-system-pumps-status" class="section-secondary"></div></section></div></body><script src="/socket.io/socket.io.js"></script><script>
+#log{height:150px;margin:15px 0;padding:5px;overflow:hidden;overflow-y:scroll;text-align:left;}#log span + span{margin-left:10px}#log .info{color:#1cce28}#log .warning{color:#efea07}#log .error{color:#cc0c00}
+.section-container{background:#080808;display:-webkit-box;display:-moz-box;display:-webkit-flex;display:-ms-flexbox;display:box;display:flex;-webkit-box-orient:horizontal;-moz-box-orient:horizontal;-o-box-orient:horizontal;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-box-lines:single;-moz-box-lines:single;-o-box-lines:single;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;-ms-flex-line-pack:start;-webkit-align-content:flex-start;align-content:flex-start;-webkit-box-pack:space-evenly;-moz-box-pack:space-evenly;-o-box-pack:space-evenly;-ms-flex-pack:space-evenly;-webkit-justify-content:space-evenly;justify-content:space-evenly}.section-vertical{-webkit-box-orient:vertical;-moz-box-orient:vertical;-o-box-orient:vertical;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column}section{position:relative;border:1px solid #1cce28;-webkit-box-flex:1;-moz-box-flex:1;-o-box-flex:1;box-flex:1;-webkit-flex:1 1 30%;-ms-flex:1 1 30%;flex:1 1 30%;margin:10px;min-height:100px;color:#fff;text-align:center;}section.section-container{border:none;margin:0}section:before{position:absolute;top:-15px;left:10px;content:attr(data-label);background:#080808;color:#1cce28;padding:5px}.section-meta{position:absolute;bottom:5px;right:5px;}.section-meta div{position:relative}.section-meta div:before{color:#1cce28;content:attr(data-label);position:absolute;left:-150px;width:145px;text-align:right}.section-meta-alt{position:absolute;bottom:5px;left:5px;}.section-meta-alt span + span{margin-left:10px}.section-main{font-size:3em;margin:1em 0}</style></head><body><div class="section-container"><section class="section-container section-vertical"><section data-label="Stage"><div class="section-main">Seedling (Week 1)</div></section><section data-label="System State"><div class="section-main">Germinating</div></section></section><section data-label="Tent"><div id="tent-temperature" class="section-main">??</div><div id="tent-humidity" class="section-main">??</div><div class="section-meta"><div id="ac-status" data-label="AC:">?? </div><div id="exhaust-status" data-label="Exhaust:">?? </div></div></section><section class="section-container section-vertical"><section data-label="Reservoir Temperature"><div id="reservoir-temperature" class="section-main">??</div></section><section data-label="Reservoir PH"><div id="reservoir-ph" class="section-main">??</div></section></section></div><div class="section-container"><section data-label="Light"><div id="tent-illuminance" class="section-main">??</div><div class="section-meta"><div id="light-status" data-label="Light:">??</div></div><div class="section-meta-alt"><span id="tent-full-spectrum">Full: ??</span><span id="tent-infrared-spectrum">IR: ??</span><span id="tent-visible-spectrum">Visible: ??</span></div></section><section data-label="Water"><div id="reservoir-water-level" class="section-main">??</div><div class="section-meta"><div id="drain-pump-status" data-label="Drain Pump:">??</div><div id="drain-valve-status" data-label="Drain Valve:">??</div><div id="fill-valve-status" data-label="Fill Valve:">??</div><div id="grow-system-pumps-status" data-label="System Pumps:">??</div></div></section></div><div class="section-container"><section data-label="Log"><div id="log"></div></section></div></body><script src="/socket.io/socket.io.js"></script><script>
 /* global ActiveXObject, XMLHttpRequest */
 
 (function (root, factory) {
@@ -136,6 +137,137 @@
 
 });
 
+/* global window, document, Element */
+(function(root, factory) {
+
+  root.Elem = factory(root);
+
+})(this, function() {
+
+  'use strict';
+
+  return {
+    create: function(opts) {
+      opts = opts || {};
+      var el, a, i, d;
+
+      el = document.createElement(opts.tag || 'div');
+
+      if (opts.className) {
+	el.className = opts.className;
+      }
+
+      if (opts.id) {
+	el.id = opts.id;
+      }
+      
+      if (opts.attributes) {
+	for (a in opts.attributes) {
+	  el.setAttribute(a, opts.attributes[a]);
+	}
+      }
+      
+      if (opts.html !== undefined) {
+	el.innerHTML = opts.html;
+      }
+      
+      if (opts.text) {
+	el.appendChild(document.createTextNode(opts.text));
+      }
+
+      // IE 8 doesn"t have HTMLElement
+      if (window.HTMLElement === undefined) {
+	window.HTMLElement = Element;
+      }
+      
+      if (opts.childs && opts.childs.length) {
+	for (i = 0; i < opts.childs.length; i++) {
+	  el.appendChild(opts.childs[i] instanceof window.HTMLElement ? opts.childs[i] : this.create(opts.childs[i]));
+	}
+      }
+
+      if (opts.parent) {
+	opts.parent.appendChild(el);
+      }
+
+      if (opts.onclick) {
+	el.onclick = opts.onclick;
+      }
+
+      if (opts.dataset) {
+	for (d in opts.dataset) {
+	  el.dataset[d] = opts.dataset[d];
+	}
+      }
+
+      return el;
+    },
+
+    getClosest: function(elem, selector) {
+
+      var firstChar = selector.charAt(0);
+
+      for ( ; elem && elem !== document; elem = elem.parentNode ) {
+
+	if (firstChar === '.')
+	  if (elem.classList.contains(selector.substr(1)))
+	    return elem;
+
+	if (firstChar === '#')
+	  if (elem.id === selector.substr(1))
+	    return elem;
+
+	if (firstChar === '[')
+	  if (elem.hasAttribute(selector.substr(1, selector.length - 2)))
+	    return elem;
+
+	if (elem.tagName.toLowerCase() === selector) return elem;
+
+      }
+
+      return false;
+
+    },
+
+    getOffX: function(o) {
+      // http://www.xs4all.nl/~ppk/js/findpos.html
+      var curleft = 0;
+      if (o.offsetParent) {
+	while (o.offsetParent) {
+	  curleft += o.offsetLeft;
+	  o = o.offsetParent;
+	}
+      } else if (o.x) {
+	curleft += o.x;
+      }
+      return curleft;
+    },
+
+    getTheDamnTarget: function(e) {
+      return (e.target || (window.event ? window.event.srcElement : null));
+    },
+    
+    isChildOfClass : function (oChild, oClass) {
+      if (!oChild || !oClass) return false;
+
+      while (oChild.parentNode && !oChild.classList.contains(oClass)) {
+	oChild = oChild.parentNode;
+      }
+      return oChild.classList.contains(oClass);
+    },
+
+    text: function(o) {
+      return o.innerText || o.textContent;
+    },
+
+    each: function (array, callback, scope) {
+      for (var i = 0; i < array.length; i++) {
+	callback.call(scope, array[i], i);
+      }
+    }
+  };
+});
+
 </script><script>
 (function(root, factory) {
 
@@ -167,6 +299,26 @@
     },
     status: function(value) {
       return value ? 'On' : 'Off'
+    },
+    log: function(type, meta, message) {
+      var parent = document.getElementById('log')
+
+      Elem.create({
+	parent: parent,
+	childs: [{
+	  tag: 'span',
+	  className: type,
+	  text: type
+	}, {
+	  tag: 'span',
+	  text: meta
+	}, {
+	  tag: 'span',
+	  text: message
+	}]
+      })
+
+      parent.scrollTop = parent.scrollHeight
     }
   }
 })
@@ -176,38 +328,47 @@ var socket = io()
 socket.on('bucket.5.temperature', (value) => {
   //TODO: evaluate range
   document.querySelector('#reservoir-temperature').innerHTML = value + '°C'
+  App.Log('info', 'bucket.5.temperature', value)
 })
 
 socket.on('reservoir.ph', (value) => {
   document.querySelector('#reservoir-ph').innerHTML = value
+  App.log('info', 'reservoir.ph', value)
 })
 
 socket.on('tent.humidity', (value) => {
   document.querySelector('#tent-humidity').innerHTML = value + '%'
+  App.log('info', 'tent.humidity', value)
 })
 
 socket.on('tent.temperature', (value) => {
   document.querySelector('#tent-temperature').innerHTML = value + '°C'
+  App.log('info', 'tent.temperature', value)
 })
 
 socket.on('reservoir.water_level', (value) => {
   document.querySelector('#reservoir-water-level').innerHTML = value + 'cm'
+  App.log('info', 'reservoir.water_level', value)
 })
 
 socket.on('tent.infrared_spectrum', (value) => {
-  document.querySelector('#tent-infrared-spectrum').innerHTML = value
+  document.querySelector('#tent-infrared-spectrum').innerHTML = 'IR: ' + value
+  App.log('info', 'tent.infrared_spectrum', value)
 })
 
 socket.on('tent.full_spectrum', (value) => {
-  document.querySelector('#tent-full-spectrum').innerHTML = value
+  document.querySelector('#tent-full-spectrum').innerHTML = 'Full: ' + value
+  App.log('info', 'tent.full_spectrum', value)
 })
 
 socket.on('tent.visible_spectrum', (value) => {
-  document.querySelector('#tent-visible-spectrum').innerHTML = value
+  document.querySelector('#tent-visible-spectrum').innerHTML = 'Visible: ' + value
+  App.log('info', 'tent.visible_spectrum', value)
 })
 
 socket.on('tent.illuminance', (value) => {
   document.querySelector('#tent-illuminance').innerHTML = value + ' Lux'
+  App.log('info', 'tent.illuminance', value)
 })
 
 App.api('/status').get().success((value) => {
