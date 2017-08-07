@@ -1467,14 +1467,14 @@ socket.on('tent.illuminance', (value) => {
   App.log('info', 'tent.illuminance', value)
 })
 
-App.api('/status').get().success((value) => {
-  document.querySelector('#ac-status').innerHTML = App.status(value)
-  document.querySelector('#light-status').innerHTML = App.status(value)
-  document.querySelector('#exhaust-status').innerHTML = App.status(value)
-  document.querySelector('#drain-valve-status').innerHTML = App.status(value)
-  document.querySelector('#fill-valve-status').innerHTML = App.status(value)
-  document.querySelector('#drain-pump-status').innerHTML = App.status(value)
-  document.querySelector('#grow-system-pumps-status').innerHTML = App.status(value)
+App.api('/status').get().success((data) => {
+  document.querySelector('#ac-status').innerHTML = App.status(data.ac)
+  document.querySelector('#light-status').innerHTML = App.status(data.light)
+  document.querySelector('#exhaust-status').innerHTML = App.status(data.exhaust)
+  document.querySelector('#drain-valve-status').innerHTML = App.status(data.drain_valve)
+  document.querySelector('#fill-valve-status').innerHTML = App.status(data.fill_valve)
+  document.querySelector('#drain-pump-status').innerHTML = App.status(data.drain_pump)
+  document.querySelector('#grow-system-pumps-status').innerHTML = App.status(data.grow_system_pumps)
 }).error((err) => {
   console.log(err)
 })
