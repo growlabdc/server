@@ -13,6 +13,22 @@ const serialParser = require('./utils/serial_parser')
 const api = require('./api')
 const db = require('./db')
 
+let sensor_data = {
+  'reservoir.ph': [],
+  'bucket.1.temperature': [],
+  'bucket.2.temperature': [],
+  'bucket.3.temperature': [],
+  'bucket.4.temperature': [],
+  'bucket.5.temperature': [],
+  'tent.humidity': [],
+  'tent.temperature': [],
+  'reservoir.water_level': [],
+  'tent.infrared_spectrum': [],
+  'tent.full_spectrum': [],
+  'tent.visible_spectrum': [],
+  'tent.illuminance':[]
+}
+
 const PORT = process.env.PORT || config.port || 8080
 
 sensors.setup()
@@ -47,6 +63,23 @@ serial.on('data', (message) => {
   if (!item.type)
     return
 
+  sensor_data[item.data.key].push(item.data.value)
   io.sockets.emit(item.data.key, item.data.value)
-  db.recorder(item.data.key)(item.data.value)
 })
+
+const logData = function() {
+  Object.keys(sensor_data).forEach(function(data_key,index) {
+    let total = 0
+    let values = sensor_data[data_key]
+    for(let i=0;i<values.length;i++) {
+      total += values[i]
+    }
+
+    let average = (total / values.length).toFixed(1)
+
+    db.recorder(data_key)(average)
+    sensor_data[data_key] = [] // reset values
+  })
+}
+const logging_interval = 1000 * 60 * 1 // every minute
+setTimeout(logData, logging_interval)
