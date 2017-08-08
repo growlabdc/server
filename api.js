@@ -13,8 +13,8 @@ router.get('/bucket/:bucketId/temperature', function(req, res) {
   const result = []
 
   db.valuestream('bucket.' + req.params.bucketId + '.temperature', {
-    start: req.query.start,
-    end: req.query.end
+    start: new Date(req.query.start).getTime(),
+    end: new Date(req.query.end).getTime()
   }).pipe(through(function(data){
 
     result.push({
@@ -31,8 +31,8 @@ router.get('/tent/humidity', function(req, res) {
   const result = []
 
   db.valuestream('tent.humidity', {
-    start: req.query.start,
-    end: req.query.end
+    start: new Date(req.query.start).getTime(),
+    end: new Date(req.query.end).getTime()
   }).pipe(through(function(data){
 
     result.push({
@@ -49,8 +49,8 @@ router.get('/tent/temperature', function(req, res) {
   const result = []
 
   db.valuestream('tent.temperature', {
-    start: req.query.start,
-    end: req.query.end
+    start: new Date(req.query.start).getTime(),
+    end: new Date(req.query.end).getTime()
   }).pipe(through(function(data){
 
     result.push({
@@ -67,8 +67,8 @@ router.get('/reservoir/ph', function(req, res) {
   const result = []
 
   db.valuestream('reservoir.ph', {
-    start: req.query.start,
-    end: req.query.end
+    start: new Date(req.query.start).getTime(),
+    end: new Date(req.query.end).getTime()
   }).pipe(through(function(data){
 
     result.push({
@@ -85,8 +85,8 @@ router.get('/reservoir/water_level', function(req, res) {
   const result = []
 
   db.valuestream('reservoir.water_level', {
-    start: req.query.start,
-    end: req.query.end
+    start: new Date(req.query.start).getTime(),
+    end: new Date(req.query.end).getTime()
   }).pipe(through(function(data){
 
     result.push({
@@ -103,8 +103,8 @@ router.get('/tent/infrared_spectrum', function(req, res) {
   const result = []
 
   db.valuestream('tent.infrared_spectrum', {
-    start: req.query.start,
-    end: req.query.end
+    start: new Date(req.query.start).getTime(),
+    end: new Date(req.query.end).getTime()
   }).pipe(through(function(data){
 
     result.push({
@@ -121,8 +121,8 @@ router.get('/tent/visible_spectrum', function(req, res) {
   const result = []
 
   db.valuestream('tent.full_spectrum', {
-    start: req.query.start,
-    end: req.query.end
+    start: new Date(req.query.start).getTime(),
+    end: new Date(req.query.end).getTime()
   }).pipe(through(function(data){
 
     result.push({
@@ -139,8 +139,8 @@ router.get('/tent/illuminance', function(req, res) {
   const result = []
 
   db.valuestream('tent.illuminance', {
-    start: req.query.start,
-    end: req.query.end
+    start: new Date(req.query.start).getTime(),
+    end: new Date(req.query.end).getTime()
   }).pipe(through(function(data){
 
     result.push({
