@@ -7,11 +7,17 @@ try {
   throw new Error('missing config file')
 }
 
+const fs = require('fs')
+const SerialPort = require('serialport')
 const path = require('path')
 const app = require('express')()
-const http = require('http').Server(app)
-const io = require('socket.io')(http)
-const SerialPort = require('serialport')
+
+const http = require('http').createServer(app)
+const https = require('https').createServer({
+  key: fs.readFileSync(config.key_path),
+  cert: fs.readFileSync(config.cert_path)
+}, app)
+const io = require('socket.io')(https)
 
 const relays = require('./utils/relays')
 const serialParser = require('./utils/serial_parser')
@@ -35,6 +41,7 @@ let sensor_data = {
 }
 
 const PORT = process.env.PORT || config.port || 8080
+const SSL_PORT = process.env.SSL_PORT || config.ssl_port || 3000
 
 relays.setup()
 
@@ -43,14 +50,23 @@ const serialport = new SerialPort('/dev/ttyACM0', {
   baudRate: 9600
 })
 
-app.use('/api', api)
+function ensureSecure(req, res, next){
+  if (req.secure){
+    return next();
+  }
+  console.log('redirecting route to https')
+  res.redirect('https://' + req.hostname + req.url)
+}
 
+app.all('*', ensureSecure)
+app.use('/api', api)
 app.get('/', (req, res) => {
   res.sendFile(path.resolve('client/dist/index.html'))
 })
 
-http.listen(PORT, () => {
-  console.log(`listening on *:${PORT}`);
+http.listen(PORT)
+https.listen(SSL_PORT, () => {
+  console.log(`listening on *:${SSL_PORT}`);
 })
 
 io.on('connection', (socket) => {
@@ -58,9 +74,7 @@ io.on('connection', (socket) => {
 })
 
 serialport.pipe(serial)
-
 serialport.on('open', () => console.log('Port open'))
-
 serial.on('data', (message) => {
   const item = serialParser(message)
   console.log(item)
@@ -71,23 +85,6 @@ serial.on('data', (message) => {
   sensor_data[item.data.key].push(item.data.value)
   io.sockets.emit(item.data.key, item.data.value)
 })
-
-const logData = function() {
-  Object.keys(sensor_data).forEach(function(data_key,index) {
-    let total = 0
-    let values = sensor_data[data_key]
-    for(let i=0;i<values.length;i++) {
-      total += values[i]
-    }
-
-    let average = (total / values.length).toFixed(1)
-
-    db.recorder(data_key)(average)
-    sensor_data[data_key] = [] // reset values
-  })
-}
-const logging_interval = 1000 * 60 * 1 // every minute
-setInterval(logData, logging_interval)
 
 relays.ac.watch(function() {
   io.sockets.emit('ac.status', relays.ac.status())
@@ -116,3 +113,20 @@ relays.drain_pump.watch(function() {
 relays.grow_system_pumps.watch(function() {
   io.sockets.emit('grow_system_pumps.status', relays.grow_system_pumps.status())
 })
+
+const logData = function() {
+  Object.keys(sensor_data).forEach(function(data_key,index) {
+    let total = 0
+    let values = sensor_data[data_key]
+    for(let i=0;i<values.length;i++) {
+      total += values[i]
+    }
+
+    let average = (total / values.length).toFixed(1)
+
+    db.recorder(data_key)(average)
+    sensor_data[data_key] = [] // reset values
+  })
+}
+const logging_interval = 1000 * 60 * 1 // every minute
+setInterval(logData, logging_interval)

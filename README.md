@@ -39,9 +39,10 @@ sudo echo 'ip_tables' >> /etc/modules
 ```
 update /etc/rc.local
 ```
-# Forward port 80 to 5000 (where our web server is) so the
+# Forward port 80 and 443 so the
 # web server can run at normal permissions
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 3000
 ```
 generate ssl csr
 ```
