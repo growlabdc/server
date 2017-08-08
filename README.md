@@ -43,3 +43,7 @@ update /etc/rc.local
 # web server can run at normal permissions
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
 ```
+generate ssl csr
+```
+openssl req -nodes -newkey rsa:2048 -keyout private.key -out server.csr
+```

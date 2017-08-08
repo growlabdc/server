@@ -1,6 +1,11 @@
 'use strict'
 
-const config = require('./config')
+let config
+try {
+  config = require('./config')
+} catch(e) {
+  throw new Error('missing config file')
+}
 
 const path = require('path')
 const app = require('express')()
@@ -8,7 +13,7 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const SerialPort = require('serialport')
 
-const sensors = require('./utils/sensors')
+const relays = require('./utils/relays')
 const serialParser = require('./utils/serial_parser')
 const api = require('./api')
 const db = require('./db')
@@ -31,7 +36,7 @@ let sensor_data = {
 
 const PORT = process.env.PORT || config.port || 8080
 
-sensors.setup()
+relays.setup()
 
 const serial = new SerialPort.parsers.Readline({ delimiter: '\r\n' })
 const serialport = new SerialPort('/dev/ttyACM0', {
@@ -82,4 +87,32 @@ const logData = function() {
   })
 }
 const logging_interval = 1000 * 60 * 1 // every minute
-setTimeout(logData, logging_interval)
+setInterval(logData, logging_interval)
+
+relays.ac.watch(function() {
+  io.sockets.emit('ac.status', relays.ac.status())
+})
+
+relays.light.watch(function() {
+  io.sockets.emit('light.status', relays.light.status())
+})
+
+relays.exhaust.watch(function() {
+  io.sockets.emit('exhaust.status', relays.exhaust.status())
+})
+
+relays.drain_valve.watch(function() {
+  io.sockets.emit('drain_valve.status', relays.drain_valve.status())
+})
+
+relays.fill_valve.watch(function() {
+  io.sockets.emit('fill_valve.status', relays.fill_valve.status())
+})
+
+relays.drain_pump.watch(function() {
+  io.sockets.emit('drain_pump.status', relays.drain_pump.status())
+})
+
+relays.grow_system_pumps.watch(function() {
+  io.sockets.emit('grow_system_pumps.status', relays.grow_system_pumps.status())
+})

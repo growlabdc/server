@@ -49,6 +49,34 @@ socket.on('tent.illuminance', (value) => {
   App.log('info', 'tent.illuminance', value)
 })
 
+socket.on('ac.status', (value) => {
+  document.querySelector('#ac-status').innerHTML = App.status(value)
+})
+
+socket.on('light.status', (value) => {
+  document.querySelector('#light-status').innerHTML = App.status(value)
+})
+
+socket.on('exhaust.status', (value) => {
+  document.querySelector('#exhaust-status').innerHTML = App.status(value)
+})
+
+socket.on('drain_valve.status', (value) => {
+  document.querySelector('#drain-valve-status').innerHTML = App.status(value)
+})
+
+socket.on('fill_valve.status', (value) => {
+  document.querySelector('#fill-valve-status').innerHTML = App.status(value)
+})
+
+socket.on('drain_pump.status', (value) => {
+  document.querySelector('#drain-pump-status').innerHTML = App.status(value)
+})
+
+socket.on('grow_system_pumps.status', (value) => {
+  document.querySelector('#grow-system-pumps-status').innerHTML = App.status(value)
+})
+
 App.api('/status').get().success((data) => {
   document.querySelector('#ac-status').innerHTML = App.status(data.ac)
   document.querySelector('#light-status').innerHTML = App.status(data.light)

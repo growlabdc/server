@@ -2,11 +2,13 @@ const through = require('through')
 const express = require('express')
 const router = express.Router()
 
-const config = require('./config')
-const sensors = require('./utils/sensors')
+const config = require('../config')
+const relays = require('../utils/relays')
 
-const db = require('./db')
+const db = require('../db')
+const relay_router = require('./relay')
 
+router.use('/relays', relay_router)
 
 router.get('/bucket/:bucketId/temperature', function(req, res) {
 
@@ -155,13 +157,13 @@ router.get('/tent/illuminance', function(req, res) {
 
 router.get('/status', function(req, res) {
   const result = {
-    ac: sensors.ac.status(),
-    light: sensors.light.status(),
-    exhaust: sensors.light.status(),
-    drain_valve: sensors.drain_valve.status(),
-    fill_valve: sensors.fill_valve.status(),
-    drain_pump: sensors.drain_pump.status(),
-    grow_system_pumps: sensors.grow_system_pumps.status()
+    ac: relays.ac.status(),
+    light: relays.light.status(),
+    exhaust: relays.light.status(),
+    drain_valve: relays.drain_valve.status(),
+    fill_valve: relays.fill_valve.status(),
+    drain_pump: relays.drain_pump.status(),
+    grow_system_pumps: relays.grow_system_pumps.status()
   }
 
   res.status(200).json(result)

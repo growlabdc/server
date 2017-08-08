@@ -2,7 +2,7 @@ const rpio = require('rpio');
 
 rpio.init({ mapping: 'gpio' })
 
-const sensors = {
+const relays = {
   setup: function() {
     this.ac.setup()
     this.light.setup()
@@ -25,7 +25,10 @@ const sensors = {
     },
     status: function() {
       return rpio.read(this.pin)
-    }    
+    },
+    watch: function(cb) {
+      rpio.poll(this.pin, cb)
+    }
   },
   light: {
     pin: 13,
@@ -40,6 +43,9 @@ const sensors = {
     },
     status: function() {
       return !rpio.read(this.pin)
+    },
+    watch: function(cb) {
+      rpio.poll(this.pin, cb)
     }    
   },
   exhaust: {
@@ -55,6 +61,9 @@ const sensors = {
     },
     status: function() {
       return !rpio.read(this.pin)
+    },
+    watch: function(cb) {
+      rpio.poll(this.pin, cb)
     }    
   },
   drain_valve: {
@@ -70,6 +79,9 @@ const sensors = {
     },
     status: function() {
       return !rpio.read(this.pin)
+    },
+    watch: function(cb) {
+      rpio.poll(this.pin, cb)
     }    
   },
   fill_valve: {
@@ -85,6 +97,9 @@ const sensors = {
     },
     status: function() {
       return !rpio.read(this.pin)
+    },
+    watch: function(cb) {
+      rpio.poll(this.pin, cb)
     }    
   },
   drain_pump: {
@@ -100,6 +115,9 @@ const sensors = {
     },
     status: function() {
       return !rpio.read(this.pin)
+    },
+    watch: function(cb) {
+      rpio.poll(this.pin, cb)
     }    
   },
   grow_system_pumps: {
@@ -115,8 +133,11 @@ const sensors = {
     },
     status: function() {
       return !rpio.read(this.pin)
-    }
+    },
+    watch: function(cb) {
+      rpio.poll(this.pin, cb)
+    }    
   }
 }
 
-module.exports = sensors
+module.exports = relays
