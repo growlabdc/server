@@ -67,10 +67,13 @@ serial.on('data', (message) => {
   if (!item.type)
     return
 
-  if (config.automate)
-    control.evaluate(item)
+  if (!sensors.isValid(item))
+    return
 
   sensors.evaluate(item)
+
+  if (config.automate)
+    control.evaluate(item)
 
   io.sockets.emit(item.data.key, item.data.value)
 })
