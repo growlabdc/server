@@ -2,6 +2,7 @@ const moment = require('moment')
 
 const relays = require('./utils/relays')
 const system = require('./system')
+const grow = require('./grow')
 
 const evaluate = function(sensor_item) {
   switch(sensor_item.key) {
@@ -69,7 +70,7 @@ const evaluate_water_level = function(water_level) {
 const light_program = function() {
   let now = new moment()
 
-  switch(GROW_STAGE) {
+  switch(grow.stage) {
     case 'VEGATATIVE':
       let dark_start = new moment(config.vegatative_dark_start)
       let dark_end = new moment(config.vegatative_dark_end)
@@ -93,7 +94,7 @@ const light_program = function() {
       break;
 
     default:
-      // error
+      relays.light.off()
       break;
   }
 }

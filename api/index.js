@@ -174,6 +174,7 @@ router.get('/relay_status', function(req, res) {
 router.get('/info', function(req, res) {
   const result = {
     state: system.getState(),
+    stage: grow.stage,
     strain: grow.strain,
     started_at: grow.started_at,
     title: grow.title
