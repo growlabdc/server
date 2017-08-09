@@ -14,16 +14,33 @@ html
                     #grow-info
                 section(data-label='System State')
                     #system-state.section-main ??
+                section(data-label='Camera')
+                    img#camera(src='http://growlab.space:8081/')
+                    .section-actions
+                        span.camera-action.active(onclick='setCamera(event, "http://growlab.space:8081/")') Visible
+                        span.camera-action(onclick='setCamera(event, "http://growlab.space:8082/")') Infrared
                 section(data-label='Log')
                     #log
-            section(data-label='Tent')
-                #tent-temperature.section-main ??
-                #tent-temperature-chart
-                #tent-humidity.section-main ??
-                #tent-humidity-chart
-                .section-meta
-                    #ac-status(data-label='AC:') ?? 
-                    #exhaust-status(data-label='Exhaust:') ?? 
+
+            section.section-container.section-vertical
+                section(data-label='Tent')
+                    #tent-temperature.section-main ??
+                    #tent-temperature-chart
+                    #tent-humidity.section-main ??
+                    #tent-humidity-chart
+                    .section-meta
+                        #ac-status(data-label='AC:') ??
+                        #exhaust-status(data-label='Exhaust:') ??
+                section(data-label='Light')
+                    #tent-illuminance.section-main ??
+                    #tent-illuminance-chart
+                    .section-meta
+                        #light-status(data-label='Light:') ??
+                    .section-meta-alt
+                        span#tent-full-spectrum Full: ??
+                        span#tent-infrared-spectrum IR: ??
+                        span#tent-visible-spectrum Visible: ??
+
             section.section-container.section-vertical
                 section(data-label='Reservoir Temperature')
                     #reservoir-temperature.section-main ??
@@ -31,24 +48,14 @@ html
                 section(data-label='Reservoir PH')
                     #reservoir-ph.section-main ??
                     #reservoir-ph-chart
-        .section-container
-            section(data-label='Light')
-                #tent-illuminance.section-main ??
-                #tent-illuminance-chart
-                .section-meta
-                    #light-status(data-label='Light:') ??
-                .section-meta-alt
-                    span#tent-full-spectrum Full: ??
-                    span#tent-infrared-spectrum IR: ??
-                    span#tent-visible-spectrum Visible: ??
-            section(data-label='Water')
-                #reservoir-water-level.section-main ??
-                #reservoir-water-level-chart
-                .section-meta
-                    #drain-pump-status(data-label='Drain Pump:') ??
-                    #drain-valve-status(data-label='Drain Valve:') ??
-                    #fill-valve-status(data-label='Fill Valve:') ??
-                    #grow-system-pumps-status(data-label='System Pumps:') ??
+                section(data-label='Water')
+                    #reservoir-water-level.section-main ??
+                    #reservoir-water-level-chart
+                    .section-meta
+                        #drain-pump-status(data-label='Drain Pump:') ??
+                        #drain-valve-status(data-label='Drain Valve:') ??
+                        #fill-valve-status(data-label='Fill Valve:') ??
+                        #grow-system-pumps-status(data-label='System Pumps:') ??
     script(src='/socket.io/socket.io.js')
     script(src='vendor.js?__inline=true')
     script(src='app.js?__inline=true')

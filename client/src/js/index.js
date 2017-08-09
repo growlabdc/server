@@ -1,3 +1,11 @@
+function setCamera(e, src) {
+  document.getElementById('camera').src = src
+  Elem.each(document.querySelectorAll('.camera-action'), function(elem) {
+    elem.classList.remove('active')
+  })
+  e.target.classList.add('active')
+}
+
 var socket = io()
 
 var end = new Date().getTime()
