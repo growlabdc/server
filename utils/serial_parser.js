@@ -92,6 +92,7 @@ const parser = function(message) {
     if (re_result) {
       item.type = sensors[i].type
       item.data = sensors[i].format(re_result)
+      item.input = re_result.input
       break;
     }
   }
