@@ -1,3 +1,4 @@
+const config = require('../config')
 const db = require('../db')
 const alerts = require('./alerts')
 
@@ -33,9 +34,9 @@ const record = function() {
 }
 
 const evaluate = function(sensor_item) {
-  sensor_data[sensor_item].push(sensor_item.value)
+  sensor_data[sensor_item.data.key].push(sensor_item.data.value)
 
-  if (config.alerts) alerts.evaluate[sensor_item.type](sensor_item)
+  if (config.alerts) alerts.evaluate(sensor_item)
 }
 
 module.exports = {
