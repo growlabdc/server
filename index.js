@@ -21,6 +21,7 @@ const io = require('socket.io')(https)
 
 const relays = require('./utils/relays')
 const serialParser = require('./utils/serial_parser')
+const system = require('./system')
 const api = require('./api')
 const db = require('./db')
 
@@ -44,11 +45,10 @@ const PORT = process.env.PORT || config.port || 8080
 const SSL_PORT = process.env.SSL_PORT || config.ssl_port || 3000
 
 relays.setup()
+system.load()
 
 const serial = new SerialPort.parsers.Readline({ delimiter: '\r\n' })
-const serialport = new SerialPort('/dev/ttyACM0', {
-  baudRate: 9600
-})
+const serialport = new SerialPort('/dev/ttyACM0', { baudRate: 9600 })
 
 function ensureSecure(req, res, next){
   if (req.secure){
@@ -77,10 +77,12 @@ serialport.pipe(serial)
 serialport.on('open', () => console.log('Port open'))
 serial.on('data', (message) => {
   const item = serialParser(message)
-  console.log(item)
 
   if (!item.type)
     return
+
+  if (config.automate)
+    control.evaluate(item)
 
   sensor_data[item.data.key].push(item.data.value)
   io.sockets.emit(item.data.key, item.data.value)
@@ -114,6 +116,10 @@ relays.grow_system_pumps.watch(function() {
   io.sockets.emit('grow_system_pumps.status', relays.grow_system_pumps.status())
 })
 
+system.events.on('change', function(value) {
+  io.sockets.emit('system.state', value)
+})
+
 const logData = function() {
   Object.keys(sensor_data).forEach(function(data_key,index) {
     let total = 0
@@ -130,3 +136,8 @@ const logData = function() {
 }
 const logging_interval = 1000 * 60 * 1 // every minute
 setInterval(logData, logging_interval)
+
+if (config.light_program) {
+  const light_interval = 1000 * 60 * 1 // every minute
+  setInterval(control.light_program, light_interval)
+}

@@ -77,7 +77,7 @@ socket.on('grow_system_pumps.status', (value) => {
   document.querySelector('#grow-system-pumps-status').innerHTML = App.status(value)
 })
 
-App.api('/status').get().success((data) => {
+App.api('/relay_status').get().success((data) => {
   document.querySelector('#ac-status').innerHTML = App.status(data.ac)
   document.querySelector('#light-status').innerHTML = App.status(data.light)
   document.querySelector('#exhaust-status').innerHTML = App.status(data.exhaust)
