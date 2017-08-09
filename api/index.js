@@ -7,6 +7,8 @@ const relays = require('../utils/relays')
 
 const db = require('../db')
 const relay_router = require('./relay')
+const system = require('../system')
+const grow = require(config.grow_info_path)
 
 router.use('/relays', relay_router)
 
@@ -155,7 +157,7 @@ router.get('/tent/illuminance', function(req, res) {
   }))
 })
 
-router.get('/status', function(req, res) {
+router.get('/relay_status', function(req, res) {
   const result = {
     ac: relays.ac.status(),
     light: relays.light.status(),
@@ -164,6 +166,17 @@ router.get('/status', function(req, res) {
     fill_valve: relays.fill_valve.status(),
     drain_pump: relays.drain_pump.status(),
     grow_system_pumps: relays.grow_system_pumps.status()
+  }
+
+  res.status(200).json(result)
+})
+
+router.get('/info', function(req, res) {
+  const result = {
+    state: system.getState(),
+    strain: grow.strain,
+    started_at: grow.started_at,
+    title: grow.title
   }
 
   res.status(200).json(result)

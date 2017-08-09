@@ -18,10 +18,10 @@ const relays = {
       rpio.open(this.pin, rpio.OUTPUT)
     },
     on: function() {
-      rpio.write(this.pin, rpio.HIGH)
+      !this.status() && rpio.write(this.pin, rpio.HIGH)
     },
     off: function() {
-      rpio.write(this.pin, rpio.LOW)
+      this.status() && rpio.write(this.pin, rpio.LOW)
     },
     status: function() {
       return rpio.read(this.pin)
@@ -36,10 +36,10 @@ const relays = {
       rpio.open(this.pin, rpio.OUTPUT)      
     },    
     on: function() {
-      rpio.write(this.pin, rpio.LOW)
+      !this.status() && rpio.write(this.pin, rpio.LOW)
     },
     off: function() {
-      rpio.write(this.pin, rpio.HIGH)
+      this.status() && rpio.write(this.pin, rpio.HIGH)
     },
     status: function() {
       return !rpio.read(this.pin)
@@ -54,10 +54,10 @@ const relays = {
       rpio.open(this.pin, rpio.OUTPUT)
     },
     on: function() {
-      rpio.write(this.pin, rpio.LOW)
+      !this.status() && rpio.write(this.pin, rpio.LOW)
     },
     off: function() {
-      rpio.write(this.pin, rpio.HIGH)
+      this.status() && rpio.write(this.pin, rpio.HIGH)
     },
     status: function() {
       return !rpio.read(this.pin)
@@ -72,10 +72,10 @@ const relays = {
       rpio.open(this.pin, rpio.OUTPUT)
     },    
     on: function() {
-      rpio.write(this.pin, rpio.LOW)
+      !this.status() && rpio.write(this.pin, rpio.LOW)
     },
     off: function() {
-      rpio.write(this.pin, rpio.HIGH)
+      this.status() && rpio.write(this.pin, rpio.HIGH)
     },
     status: function() {
       return !rpio.read(this.pin)
@@ -90,10 +90,10 @@ const relays = {
       rpio.open(this.pin, rpio.OUTPUT)
     },    
     on: function() {
-      rpio.write(this.pin, rpio.LOW)
+      !this.status() && rpio.write(this.pin, rpio.LOW)
     },
     off: function() {
-      rpio.write(this.pin, rpio.HIGH)
+      this.status() && rpio.write(this.pin, rpio.HIGH)
     },
     status: function() {
       return !rpio.read(this.pin)
@@ -108,10 +108,10 @@ const relays = {
       rpio.open(this.pin, rpio.OUTPUT)
     },    
     on: function() {
-      rpio.write(this.pin, rpio.LOW)
+      !this.status() && rpio.write(this.pin, rpio.LOW)
     },
     off: function() {
-      rpio.write(this.pin, rpio.HIGH)
+      this.status() && rpio.write(this.pin, rpio.HIGH)
     },
     status: function() {
       return !rpio.read(this.pin)
@@ -126,10 +126,10 @@ const relays = {
       rpio.open(this.pin, rpio.OUTPUT)
     },   
     on: function() {
-      rpio.write(this.pin, rpio.LOW)
+      !this.status() && rpio.write(this.pin, rpio.LOW)
     },
     off: function() {
-      rpio.write(this.pin, rpio.HIGH)
+      this.status() && rpio.write(this.pin, rpio.HIGH)
     },
     status: function() {
       return !rpio.read(this.pin)

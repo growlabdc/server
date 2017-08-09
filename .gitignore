@@ -3,4 +3,7 @@ node_modules/
 
 tmp/
 
+package-lock.json
 config.js
+grow.json
+state.json
