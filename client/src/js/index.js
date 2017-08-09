@@ -77,6 +77,10 @@ socket.on('grow_system_pumps.status', (value) => {
   document.querySelector('#grow-system-pumps-status').innerHTML = App.status(value)
 })
 
+socket.on('system.state', (value) => {
+  document.querySelector('#system-state').innerHTML = value
+})
+
 App.api('/relay_status').get().success((data) => {
   document.querySelector('#ac-status').innerHTML = App.status(data.ac)
   document.querySelector('#light-status').innerHTML = App.status(data.light)
@@ -86,7 +90,18 @@ App.api('/relay_status').get().success((data) => {
   document.querySelector('#drain-pump-status').innerHTML = App.status(data.drain_pump)
   document.querySelector('#grow-system-pumps-status').innerHTML = App.status(data.grow_system_pumps)
 }).error((err) => {
-  console.log(err)
+  console.error(err)
+})
+
+App.api('/info').get().success((data) => {
+  var start = new Date(data.started_at)
+  var now = new Date()
+  var weeks = Math.round((now - start) / (7 * 24 * 60 * 60 * 1000))
+  document.querySelector('#system-state').innerHTML = data.state
+  document.querySelector('#grow-stage').innerHTML = data.stage + ' (Week ' + weeks + ')'
+  document.querySelector('#grow-info').innerHTML = data.title + ' (' + data.strain + ')'
+}).error((err) => {
+  console.error(err)
 })
 
 d3.json('/api/bucket/5/temperature?start=' + start.toString() + '&end=' + end.toString(), function(data) {
