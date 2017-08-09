@@ -23,6 +23,10 @@ section
         color $alt
         padding 5px
 
+    img
+        max-height 200xp
+        max-width 100%
+
 .section-meta
     absolute top 5px right 5px
 
@@ -37,9 +41,15 @@ section
         text-align right
 
 .section-meta-alt
-    absolute bottom 5px left 5px
+.section-actions
     span + span
         margin-left 10px
+
+.section-actions
+    span
+        cursor pointer
+        &:not(.active)
+            color rgba(255,255,255,0.2)
 
 .section-main
     font-size 3em
