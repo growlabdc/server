@@ -30,7 +30,7 @@ module.exports = {
       maximum: 90
     },
     air_temperature: {
-      minimum: 21.1
+      minimum: 21.1,
       maximum: 26.1
     },
     water_level: {
