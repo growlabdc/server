@@ -11,6 +11,7 @@ const fs = require('fs')
 const SerialPort = require('serialport')
 const path = require('path')
 const app = require('express')()
+const Logger = require('logplease');
 
 const http = require('http').createServer(app)
 const https = require('https').createServer({
@@ -22,24 +23,8 @@ const io = require('socket.io')(https)
 const relays = require('./utils/relays')
 const serialParser = require('./utils/serial_parser')
 const system = require('./system')
+const sensors = require('./utils/sensors')
 const api = require('./api')
-const db = require('./db')
-
-let sensor_data = {
-  'reservoir.ph': [],
-  'bucket.1.temperature': [],
-  'bucket.2.temperature': [],
-  'bucket.3.temperature': [],
-  'bucket.4.temperature': [],
-  'bucket.5.temperature': [],
-  'tent.humidity': [],
-  'tent.temperature': [],
-  'reservoir.water_level': [],
-  'tent.infrared_spectrum': [],
-  'tent.full_spectrum': [],
-  'tent.visible_spectrum': [],
-  'tent.illuminance':[]
-}
 
 const PORT = process.env.PORT || config.port || 8080
 const SSL_PORT = process.env.SSL_PORT || config.ssl_port || 3000
@@ -49,12 +34,13 @@ system.load()
 
 const serial = new SerialPort.parsers.Readline({ delimiter: '\r\n' })
 const serialport = new SerialPort('/dev/ttyACM0', { baudRate: 9600 })
+const logger = Logger.create('app')
 
 function ensureSecure(req, res, next){
   if (req.secure){
     return next();
   }
-  console.log('redirecting route to https')
+  logger.info('redirecting http connection to https')
   res.redirect('https://' + req.hostname + req.url)
 }
 
@@ -66,15 +52,15 @@ app.get('/', (req, res) => {
 
 http.listen(PORT)
 https.listen(SSL_PORT, () => {
-  console.log(`listening on *:${SSL_PORT}`);
+  logger.info(`listening on *:${SSL_PORT}`);
 })
 
 io.on('connection', (socket) => {
-  console.log('a user connected')
+  logger.info('socket.io connection made')
 })
 
 serialport.pipe(serial)
-serialport.on('open', () => console.log('Port open'))
+serialport.on('open', () => logger.info('serial port opened'))
 serial.on('data', (message) => {
   const item = serialParser(message)
 
@@ -84,7 +70,8 @@ serial.on('data', (message) => {
   if (config.automate)
     control.evaluate(item)
 
-  sensor_data[item.data.key].push(item.data.value)
+  sensors.evaluate(item)
+
   io.sockets.emit(item.data.key, item.data.value)
 })
 
@@ -120,22 +107,8 @@ system.events.on('change', function(value) {
   io.sockets.emit('system.state', value)
 })
 
-const logData = function() {
-  Object.keys(sensor_data).forEach(function(data_key,index) {
-    let total = 0
-    let values = sensor_data[data_key]
-    for(let i=0;i<values.length;i++) {
-      total += values[i]
-    }
-
-    let average = (total / values.length).toFixed(1)
-
-    db.recorder(data_key)(average)
-    sensor_data[data_key] = [] // reset values
-  })
-}
 const logging_interval = 1000 * 60 * 1 // every minute
-setInterval(logData, logging_interval)
+setInterval(sensors.record, logging_interval)
 
 if (config.light_program) {
   const light_interval = 1000 * 60 * 1 // every minute
