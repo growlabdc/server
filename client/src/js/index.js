@@ -9,7 +9,7 @@ function setCamera(e, src) {
 var socket = io()
 
 var end = new Date().getTime()
-var start = new Date().setTime(end - (24*60*60*1000))
+var start = new Date().setTime(end - (12*60*60*1000))
 
 socket.on('bucket.5.temperature', (value) => {
   //TODO: evaluate range
