@@ -24,7 +24,7 @@ const relays = {
       this.status() && rpio.write(this.pin, rpio.LOW)
     },
     status: function() {
-      return rpio.read(this.pin)
+      return !!rpio.read(this.pin)
     },
     watch: function(cb) {
       rpio.poll(this.pin, cb)
