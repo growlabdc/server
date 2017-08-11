@@ -184,7 +184,7 @@ router.get('/relay_status', function(req, res) {
   const result = {
     ac: relays.ac.status(),
     light: relays.light.status(),
-    exhaust: relays.light.status(),
+    exhaust: relays.exhaust.status(),
     drain_valve: relays.drain_valve.status(),
     fill_valve: relays.fill_valve.status(),
     drain_pump: relays.drain_pump.status(),
