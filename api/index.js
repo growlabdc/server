@@ -15,10 +15,12 @@ router.use('/relays', relay_router)
 router.get('/bucket/:bucketId/temperature', function(req, res) {
 
   const result = []
+  const start = req.query.start && new Date(parseInt(req.query.start, 10)).getTime()
+  const end = req.query.end && new Date(new Date(parseInt(req.query.end, 10)).getTime()).getTime()
 
   db.valuestream('bucket.' + req.params.bucketId + '.temperature', {
-    start: new Date(req.query.start).getTime(),
-    end: new Date(req.query.end).getTime()
+    start: start,
+    end: end
   }).pipe(through(function(data){
 
     result.push({
@@ -32,11 +34,14 @@ router.get('/bucket/:bucketId/temperature', function(req, res) {
 })
 
 router.get('/tent/humidity', function(req, res) {
+
   const result = []
+  const start = req.query.start && new Date(parseInt(req.query.start, 10)).getTime()
+  const end = req.query.end && new Date(parseInt(req.query.end, 10)).getTime()
 
   db.valuestream('tent.humidity', {
-    start: new Date(req.query.start).getTime(),
-    end: new Date(req.query.end).getTime()
+    start: start,
+    end: end
   }).pipe(through(function(data){
 
     result.push({
@@ -50,11 +55,14 @@ router.get('/tent/humidity', function(req, res) {
 })
 
 router.get('/tent/temperature', function(req, res) {
+
   const result = []
+  const start = req.query.start && new Date(parseInt(req.query.start, 10)).getTime()
+  const end = req.query.end && new Date(parseInt(req.query.end, 10)).getTime()
 
   db.valuestream('tent.temperature', {
-    start: new Date(req.query.start).getTime(),
-    end: new Date(req.query.end).getTime()
+    start: start,
+    end: end
   }).pipe(through(function(data){
 
     result.push({
@@ -68,11 +76,14 @@ router.get('/tent/temperature', function(req, res) {
 })
 
 router.get('/reservoir/ph', function(req, res) {
+
   const result = []
+  const start = req.query.start && new Date(parseInt(req.query.start, 10)).getTime()
+  const end = req.query.end && new Date(parseInt(req.query.end, 10)).getTime()
 
   db.valuestream('reservoir.ph', {
-    start: new Date(req.query.start).getTime(),
-    end: new Date(req.query.end).getTime()
+    start: start,
+    end: end
   }).pipe(through(function(data){
 
     result.push({
@@ -86,11 +97,14 @@ router.get('/reservoir/ph', function(req, res) {
 })
 
 router.get('/reservoir/water_level', function(req, res) {
+
   const result = []
+  const start = req.query.start && new Date(parseInt(req.query.start, 10)).getTime()
+  const end = req.query.end && new Date(parseInt(req.query.end, 10)).getTime()
 
   db.valuestream('reservoir.water_level', {
-    start: new Date(req.query.start).getTime(),
-    end: new Date(req.query.end).getTime()
+    start: start,
+    end: end
   }).pipe(through(function(data){
 
     result.push({
@@ -104,11 +118,14 @@ router.get('/reservoir/water_level', function(req, res) {
 })
 
 router.get('/tent/infrared_spectrum', function(req, res) {
+
   const result = []
+  const start = req.query.start && new Date(parseInt(req.query.start, 10)).getTime()
+  const end = req.query.end && new Date(parseInt(req.query.end, 10)).getTime()
 
   db.valuestream('tent.infrared_spectrum', {
-    start: new Date(req.query.start).getTime(),
-    end: new Date(req.query.end).getTime()
+    start: start,
+    end: end
   }).pipe(through(function(data){
 
     result.push({
@@ -122,11 +139,14 @@ router.get('/tent/infrared_spectrum', function(req, res) {
 })
 
 router.get('/tent/visible_spectrum', function(req, res) {
+
   const result = []
+  const start = req.query.start && new Date(parseInt(req.query.start, 10)).getTime()
+  const end = req.query.end && new Date(parseInt(req.query.end, 10)).getTime()
 
   db.valuestream('tent.full_spectrum', {
-    start: new Date(req.query.start).getTime(),
-    end: new Date(req.query.end).getTime()
+    start: start,
+    end: end
   }).pipe(through(function(data){
 
     result.push({
@@ -140,11 +160,14 @@ router.get('/tent/visible_spectrum', function(req, res) {
 })
 
 router.get('/tent/illuminance', function(req, res) {
+
   const result = []
+  const start = req.query.start && new Date(parseInt(req.query.start, 10)).getTime()
+  const end = req.query.end && new Date(parseInt(req.query.end, 10)).getTime()
 
   db.valuestream('tent.illuminance', {
-    start: new Date(req.query.start).getTime(),
-    end: new Date(req.query.end).getTime()
+    start: start,
+    end: end
   }).pipe(through(function(data){
 
     result.push({
