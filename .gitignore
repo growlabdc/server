@@ -4,6 +4,7 @@ node_modules/
 tmp/
 
 package-lock.json
+alerts.log
 config.js
 grow.json
 state.json
