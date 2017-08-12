@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "express": "^4.15.3",
+    "express-http-proxy": "^1.0.6",
     "grunt": "^1.0.1",
     "jsonfile": "^3.0.1",
     "lem": "^1.0.0",

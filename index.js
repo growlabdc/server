@@ -9,6 +9,7 @@ try {
 
 const fs = require('fs')
 const SerialPort = require('serialport')
+const proxy = require('express-http-proxy')
 const path = require('path')
 const app = require('express')()
 const Logger = require('logplease');
@@ -49,6 +50,12 @@ app.use('/api', api)
 app.get('/', (req, res) => {
   res.sendFile(path.resolve('client/dist/index.html'))
 })
+
+if (config.cameras.length) {
+  config.cameras.forEach(function(camera) {
+    app.use(camera.path, proxy(camera.host))
+  })
+}
 
 http.listen(PORT)
 https.listen(SSL_PORT, () => {
