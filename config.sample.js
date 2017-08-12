@@ -41,5 +41,9 @@ module.exports = {
       minimum: -1,
       maximum: 60000
     }
-  }
+  },
+  cameras: [{
+    path: '/camera/visible-one/',
+    host: 'http://192.1.168.100:8081'
+  }]
 }
