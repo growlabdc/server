@@ -8,6 +8,16 @@ module.exports = {
   token: 'password',
   port: 8080,
   ssl_port: 3000,
+
+  notification: {
+    device_tokens: [],
+    apn: {
+      production: false,
+      cert: path.join(__dirname, 'apn_cert.pem'),
+      key: path.join(__dirname, 'apn_key.pem')
+    }
+  },
+
   maximum_water_level: 8,
   minimum_water_level: 25,
   vegatative_dark_start: '',
