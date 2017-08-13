@@ -1,5 +1,8 @@
 const config = require('../config')
 
+const Logger = require('logplease')
+const logger = Logger.create('notification')
+
 const apn  = require('apn')
 
 const THROTTLE_INTERVAL = 15 * 60 * 1000
@@ -8,7 +11,7 @@ let notifications = {}
 let provider = new apn.Provider(config.notification.apn)
 
 provider.on('error', function(err) {
-  console.log(err)
+  logger.error(err)
 })
 
 const sendNotification = (opts) => {
@@ -32,7 +35,7 @@ const sendNotification = (opts) => {
   notifications[opts.title] = new Date()
 
   provider.send(notification, config.notification.device_tokens).then( (response) => {
-    console.log(resposne)
+    logger.info(`notification sent ${opts.title}`)
   })
 }
 
