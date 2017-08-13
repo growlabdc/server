@@ -3,6 +3,8 @@ node_modules/
 
 tmp/
 
+*.pem
+
 package-lock.json
 alerts.log
 config.js

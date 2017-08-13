@@ -26,16 +26,13 @@ const serialParser = require('./utils/serial_parser')
 const system = require('./system')
 const sensors = require('./utils/sensors')
 const api = require('./api')
-const notification = require('./utils/notification')
+const notification = require('./utils/notification').sendNotification
 
 const PORT = process.env.PORT || config.port || 8080
 const SSL_PORT = process.env.SSL_PORT || config.ssl_port || 3000
 
 relays.setup()
 system.load()
-
-if (config.notification)
-  notification.initialize()
 
 const serial = new SerialPort.parsers.Readline({ delimiter: '\r\n' })
 const serialport = new SerialPort('/dev/ttyACM0', { baudRate: 9600 })
@@ -121,9 +118,9 @@ system.events.on('change', function(value) {
   io.sockets.emit('system.state', value)
 
   if (config.notification)
-    notification.sendNotification({
+    sendNotification({
       title: 'System State Changed',
-      body: `system state has changed to: ${value}`
+      body: value
     })
 })
 

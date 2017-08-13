@@ -25,7 +25,6 @@ const evaluate = function(i) {
 
   if (config.alerts[i.type].maximum && i.data.value >= config.alerts[i.type].maximum)
     log(i)
-  }
 }
 
 module.exports = {
