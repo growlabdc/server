@@ -7,10 +7,12 @@ const relays = require('../utils/relays')
 
 const db = require('../db')
 const relay_router = require('./relay')
+const system_router = require('./system')
 const system = require('../system')
 const grow = require(config.grow_info_path)
 
 router.use('/relays', relay_router)
+router.use('/system', system_router)
 
 router.get('/bucket/:bucketId/temperature', function(req, res) {
 
