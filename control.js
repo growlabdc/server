@@ -44,10 +44,14 @@ const evaluate_ph = function(ph) {
 
 const evaluate_water_level = function(water_level) {
   if (system.getState() === 'GROWING')
+    //TODO: top it off if its gotten too low
     return
 
   if (system.getState() === 'DRAINING') {
-    if (water_level <= config.minimum_water_level) {
+
+    //INFO: water level is depicted by distance from lid to water
+
+    if (water_level >= config.minimum_water_level) {
       system.setState('FILLING')
       relays.drain_valve.off()
       relays.drain_pump.off()
@@ -57,13 +61,23 @@ const evaluate_water_level = function(water_level) {
       relays.drain_pump.on()
       relays.fill_valve.off()
     }
-  } else {
-    if (water_level >= config.maxiumum_water_level) {
+
+  } else if (system.getState() === 'FILLING'){
+
+    if (system.getDrainCycle() < 2 && water_level <= config.drain_cycle_level) {
+      system.setState('DRAINING')
+      system.increaseDrainCycle()
+      relays.drain_valve.on()
+      relays.drain_pump.on()
+      relays.fill_valve.off()
+    } else if (water_level <= config.maxiumum_water_level) {
       system.getState('GROWING')
+      system.resetDrainCycle()
       relays.fill_valve.off()
     } else {
       relays.fill_valve.on()
     }
+
   }
 }
 
