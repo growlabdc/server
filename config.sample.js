@@ -18,13 +18,24 @@ module.exports = {
     }
   },
 
+  light_program: false,
+  lights: {
+    SEEDLING: {
+      start: 10,
+      end: 16
+    },
+    VEGATATIVE: {
+      start: 10,
+      end: 16
+    },
+    FLOWERING: {
+      start: 7,
+      end: 19
+    }
+  },
+
   maximum_water_level: 8,
   minimum_water_level: 25,
-  vegatative_dark_start: '',
-  vegatative_dark_end: '',
-  flowering_dark_start: '',
-  flowering_dark_end: '',
-  light_program: false,
   automate: false,
   alerts: {
     ph: {
