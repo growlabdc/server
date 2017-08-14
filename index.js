@@ -28,6 +28,7 @@ const sensors = require('./utils/sensors')
 const api = require('./api')
 const control = require('./control')
 const notification = require('./utils/notification').sendNotification
+const db = require('./db')
 
 const PORT = process.env.PORT || config.port || 8080
 const SSL_PORT = process.env.SSL_PORT || config.ssl_port || 3000
@@ -68,6 +69,67 @@ io.on('connection', (socket) => {
   logger.info('socket.io connection made')
 })
 
+relays.ac.watch(function() {
+  const status = relays.ac.status()
+  io.sockets.emit('ac.status', status)
+  db.recorder('ac.status', status)
+})
+
+relays.light.watch(function() {
+  const status = relays.light.status()
+  io.sockets.emit('light.status', status)
+  db.recorder('light.status', status)
+})
+
+relays.exhaust.watch(function() {
+  const status = relays.exhaust.status()
+  io.sockets.emit('exhaust.status', status)
+  db.recorder('exhaust.status', status)
+})
+
+relays.drain_valve.watch(function() {
+  const status = relays.drain_valve.status()
+  io.sockets.emit('drain_valve.status', status)
+  db.recorder('drain_valve.status', status)
+})
+
+relays.fill_valve.watch(function() {
+  const status = relays.fill_valve.status()
+  io.sockets.emit('fill_valve.status', status)
+  db.recorder('fill_valve.status', status)
+})
+
+relays.drain_pump.watch(function() {
+  const status = relays.drain_pump.status()
+  io.sockets.emit('drain_pump.status', status)
+  db.recorder('drain_pump.status', status)
+})
+
+relays.grow_system_pumps.watch(function() {
+  const status = relays.grow_system_pumps.status()
+  io.sockets.emit('grow_system_pumps.status', status)
+  db.recorder('grow_system_pumps.status', status)
+})
+
+system.events.on('change', function(value) {
+  io.sockets.emit('system.state', value)
+  db.recorder('system.state', value)
+
+  if (config.notification)
+    sendNotification({
+      title: 'System State Changed',
+      body: value
+    })
+})
+
+const logging_interval = 1000 * 60 * 1 // every minute
+setInterval(sensors.record, logging_interval)
+
+if (config.light_program) {
+  const light_interval = 1000 * 60 * 1 // every minute
+  setInterval(control.light_program, light_interval)
+}
+
 serialport.pipe(serial)
 serialport.on('open', () => logger.info('serial port opened'))
 serial.on('data', (message) => {
@@ -86,49 +148,3 @@ serial.on('data', (message) => {
 
   io.sockets.emit(item.data.key, item.data.value)
 })
-
-relays.ac.watch(function() {
-  io.sockets.emit('ac.status', relays.ac.status())
-})
-
-relays.light.watch(function() {
-  io.sockets.emit('light.status', relays.light.status())
-})
-
-relays.exhaust.watch(function() {
-  io.sockets.emit('exhaust.status', relays.exhaust.status())
-})
-
-relays.drain_valve.watch(function() {
-  io.sockets.emit('drain_valve.status', relays.drain_valve.status())
-})
-
-relays.fill_valve.watch(function() {
-  io.sockets.emit('fill_valve.status', relays.fill_valve.status())
-})
-
-relays.drain_pump.watch(function() {
-  io.sockets.emit('drain_pump.status', relays.drain_pump.status())
-})
-
-relays.grow_system_pumps.watch(function() {
-  io.sockets.emit('grow_system_pumps.status', relays.grow_system_pumps.status())
-})
-
-system.events.on('change', function(value) {
-  io.sockets.emit('system.state', value)
-
-  if (config.notification)
-    sendNotification({
-      title: 'System State Changed',
-      body: value
-    })
-})
-
-const logging_interval = 1000 * 60 * 1 // every minute
-setInterval(sensors.record, logging_interval)
-
-if (config.light_program) {
-  const light_interval = 1000 * 60 * 1 // every minute
-  setInterval(control.light_program, light_interval)
-}
