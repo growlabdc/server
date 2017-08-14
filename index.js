@@ -38,7 +38,7 @@ system.load()
 
 const serial = new SerialPort.parsers.Readline({ delimiter: '\r\n' })
 const serialport = new SerialPort('/dev/ttyACM0', { baudRate: 9600 })
-const logger = Logger.create('app')
+const logger = Logger.create('server')
 
 function ensureSecure(req, res, next){
   if (req.secure){
