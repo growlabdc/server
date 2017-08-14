@@ -9,7 +9,7 @@ const sensors = [{
   }
 },{
   type: 'water_temperature',
-  re: /Temperature bucket (\d): ([\d.]+)/,
+  re: /Temperature bucket ([1234]): ([\d.]+)/,
   format: function(re_result) {
     const bucket_number = parseInt(re_result[1], 10)
     return {
@@ -28,7 +28,7 @@ const sensors = [{
   }    
 },{
   type: 'air_temperature',
-  re: /Temperature: ([\d.]+)/,
+  re: /Temperature bucket 5: ([\d.]+)/,
   format: function(re_result) {
     return {
       key: 'tent.temperature',
