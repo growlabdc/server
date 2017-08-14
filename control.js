@@ -23,7 +23,7 @@ const evaluate = function(sensor_item) {
   }
 }
 
-const evaluate_temperarture = function(temperature) {
+const evaluate_temperature = function(temperature) {
   if (temperature >= 25) {
     relays.ac.on()
     relays.exhaust.off()
@@ -91,7 +91,6 @@ const light_program = function() {
     relays.light.off()
   else
     relays.light.on()
-  }
 }
 
 module.exports = {
