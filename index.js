@@ -26,6 +26,7 @@ const serialParser = require('./utils/serial_parser')
 const system = require('./system')
 const sensors = require('./utils/sensors')
 const api = require('./api')
+const control = require('./control')
 const notification = require('./utils/notification').sendNotification
 
 const PORT = process.env.PORT || config.port || 8080

@@ -5,17 +5,17 @@ const system = require('./system')
 const grow = require('./grow')
 
 const evaluate = function(sensor_item) {
-  switch(sensor_item.key) {
+  switch(sensor_item.data.key) {
     case 'tent.temperature':
-      evaluate_temperature(sensor_item.value)
+      evaluate_temperature(sensor_item.data.value)
       break;
 
     case 'reservoir.ph':
-      evaluate_ph(sensor_item.value)
+      evaluate_ph(sensor_item.data.value)
       break;
 
     case 'reservoir.water_level':
-      evaluate_water_level(sensor_item.value)
+      evaluate_water_level(sensor_item.data.value)
       break;
 
     default:
@@ -23,11 +23,11 @@ const evaluate = function(sensor_item) {
   }
 }
 
-const evaluate_tempearture = function(temperature) {
-  if (temperature >= 77) {
+const evaluate_temperarture = function(temperature) {
+  if (temperature >= 25) {
     relays.ac.on()
     relays.exhaust.off()
-  } else if (temperature >= 76) {
+  } else if (temperature >= 23.8) {
     relays.exhaust.on()
   } else {
     relays.ac.off()
@@ -70,32 +70,13 @@ const evaluate_water_level = function(water_level) {
 const light_program = function() {
   let now = new moment()
 
-  switch(grow.stage) {
-    case 'VEGATATIVE':
-      let dark_start = new moment(config.vegatative_dark_start)
-      let dark_end = new moment(config.vegatative_dark_end)
+  let dark_start = new moment(config.lights[grow.state].start, 'H')
+  let dark_end = new moment(config.lights[grow.state].end, 'H')
 
-      if (now.isBetween(dark_start, dark_end))
-	relays.light.off()
-      else
-	relays.light.on()
-
-      break;
-
-    case 'FLOWERING':
-      let dark_start = new moment(config.flowering_dark_start)
-      let dark_end = new moment(config.flowering_dark_end)
-
-      if (now.isBetween(dark_start, dark_end))
-	relays.light.off()
-      else
-	relays.light.on()
-
-      break;
-
-    default:
-      relays.light.off()
-      break;
+  if (now.isBetween(dark_start, dark_end, 'minute'))
+    relays.light.off()
+  else
+    relays.light.on()
   }
 }
 
