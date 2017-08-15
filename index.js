@@ -27,7 +27,7 @@ const system = require('./system')
 const sensors = require('./utils/sensors')
 const api = require('./api')
 const control = require('./control')
-const notification = require('./utils/notification').sendNotification
+const sendNotification = require('./utils/notification').sendNotification
 const db = require('./db')
 
 const PORT = process.env.PORT || config.port || 8080
