@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+const config = require('../config')
 const system = require('../system')
 
 router.use(function(req, res, next) {

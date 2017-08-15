@@ -1,5 +1,6 @@
 const moment = require('moment')
 
+const config = require('./config')
 const relays = require('./utils/relays')
 const system = require('./system')
 const grow = require('./grow')
@@ -27,7 +28,7 @@ const evaluate_temperature = function(temperature) {
   if (temperature >= 25) {
     relays.ac.on()
     relays.exhaust.off()
-  } else if (temperature >= 23.8) {
+  } else if (temperature >= 23.8 && relays.ac.status()) {
     relays.exhaust.on()
   } else {
     relays.ac.off()
@@ -43,9 +44,15 @@ const evaluate_ph = function(ph) {
 }
 
 const evaluate_water_level = function(water_level) {
-  if (system.getState() === 'GROWING')
+  if (system.getState() === 'GROWING') {
     //TODO: top it off if its gotten too low
+
+    relays.drain_valve.off()
+    relays.drain_pump.off()
+    relays.fill_valve.off()
+
     return
+  }
 
   if (system.getState() === 'DRAINING') {
 
@@ -70,22 +77,25 @@ const evaluate_water_level = function(water_level) {
       relays.drain_valve.on()
       relays.drain_pump.on()
       relays.fill_valve.off()
-    } else if (water_level <= config.maxiumum_water_level) {
-      system.getState('GROWING')
+    } else if (water_level <= config.maximum_water_level) {
+      system.setState('GROWING')
       system.resetDrainCycle()
       relays.fill_valve.off()
     } else {
       relays.fill_valve.on()
+      relays.drain_valve.off()
+      relays.drain_pump.off()
     }
 
   }
 }
 
 const light_program = function() {
-  let now = new moment()
+  const stage = grow.stage
+  const now = new moment()
 
-  let dark_start = new moment(config.lights[grow.state].start, 'H')
-  let dark_end = new moment(config.lights[grow.state].end, 'H')
+  const dark_start = new moment(config.lights[stage].start, 'H')
+  const dark_end = new moment(config.lights[stage].end, 'H')
 
   if (now.isBetween(dark_start, dark_end, 'minute'))
     relays.light.off()
