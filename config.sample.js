@@ -63,8 +63,38 @@ module.exports = {
       maximum: 60000
     }
   },
+
   cameras: [{
     path: '/camera/visible-one/',
     host: 'http://192.1.168.100:8081'
-  }]
+  }],
+
+  motor_hat_one: {
+    hat_config: {
+      dcs: ['M1','M2','M3','M4']
+    },
+    motor_config: [{
+      speed: 78
+    }, {
+      speed: 78
+    }, {
+      speed: 78
+    }, {
+      speed: 78
+    }]
+  },
+  motor_hat_two: {
+    hat_config: {
+      dcs: ['M1','M2','M3','M4']
+    },
+    motor_config: [{
+      speed: 78
+    }, {
+      speed: 78
+    }, {
+      speed: 78
+    }, {
+      speed: 78
+    }]
+  }
 }
