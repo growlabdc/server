@@ -57,8 +57,12 @@ module.exports = {
     }
   }
 
-  maximum_water_level: 8,
-  minimum_water_level: 25,
+  automate_water_level: false,
+  maximum_water_level: 10,
+  minimum_water_level: 24,
+  drain_cycle_level: 21,
+  grow_water_level: 12
+
   automate: false,
   alerts: {
     ph: {
