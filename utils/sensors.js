@@ -52,10 +52,10 @@ const isValid = function(sensor_item) {
 
   if (limits) {
     if (sensor_item.data.value < limits.min)
-      return false
+      return true
 
     if (sensor_item.data.value > limits.max)
-      return false
+      return true
   }
 
   if (parseInt(average, 10) === 0)
