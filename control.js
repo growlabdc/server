@@ -45,11 +45,23 @@ const evaluate_ph = function(ph) {
 
 const evaluate_water_level = function(water_level) {
   if (system.getState() === 'GROWING') {
-    //TODO: top it off if its gotten too low
 
-    relays.drain_valve.off()
     relays.drain_pump.off()
-    relays.fill_valve.off()
+
+    if (!config.automate_water_level) {
+      relays.fill_valve.off()
+      relays.drain_valve.off()
+      return
+    }
+
+    if (water_level < config.maximum_water_level) {
+      relays.drain_valve.on()
+    } else if (water_level > config.grow_water_level) {
+      relays.fill_valve.on()
+    } else {
+      relays.fill_valve.off()
+      relays.drain_valve.off()
+    }
 
     return
   }
