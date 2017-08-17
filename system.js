@@ -28,7 +28,7 @@ const system = {
   },
 
   record: function() {
-    db.recorder('system.state', this._data.state)
+    db.recorder('system.state')(this._data.state)
   },
 
   setState: function(value) {

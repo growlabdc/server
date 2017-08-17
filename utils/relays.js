@@ -7,6 +7,11 @@ const db = require('../db')
 
 const events = new EventEmitter()
 
+const save = function(key, status) {
+  const value = status ? '1' : '0'
+  db.recorder(key)(value)
+}
+
 const relays = {
   events: events,
   setup: function() {
@@ -30,14 +35,11 @@ const relays = {
     off: function() {
       this.status() && rpio.write(this.pin, rpio.LOW)
     },
-    save: function() {
-      db.recorder('ac.status', this.status)
-    },
     status: function() {
       return !!rpio.read(this.pin)
     },
     onChange: function() {
-      this.save()
+      save('ac.status', this.status())
       events.emit('change', 'ac.status', this.status())
     }
   },
@@ -53,14 +55,11 @@ const relays = {
     off: function() {
       this.status() && rpio.write(this.pin, rpio.HIGH)
     },
-    save: function() {
-      db.recorder('light.status', this.status)
-    },
     status: function() {
       return !rpio.read(this.pin)
     },
     onChange: function() {
-      this.save()
+      save('light.status', this.status())
       events.emit('change', 'light.status', this.status())
     }
   },
@@ -76,14 +75,11 @@ const relays = {
     off: function() {
       this.status() && rpio.write(this.pin, rpio.HIGH)
     },
-    save: function() {
-      db.recorder('exhaust.status', this.status)
-    },
     status: function() {
       return !rpio.read(this.pin)
     },
     onChange: function() {
-      this.save()
+      save('exhaust.status', this.status())
       events.emit('change', 'exhaust.status', this.status())
     }
   },
@@ -99,14 +95,11 @@ const relays = {
     off: function() {
       this.status() && rpio.write(this.pin, rpio.HIGH)
     },
-    save: function() {
-      db.recorder('drain_valve.save', this.status)
-    },
     status: function() {
       return !rpio.read(this.pin)
     },
     onChange: function() {
-      this.save()
+      save('drain_valve.status', this.status())
       events.emit('change', 'drain_valve.status', this.status())
     }
   },
@@ -122,14 +115,11 @@ const relays = {
     off: function() {
       this.status() && rpio.write(this.pin, rpio.HIGH)
     },
-    save: function() {
-      db.recorder('fill_valve.status', this.status)
-    },
     status: function() {
       return !rpio.read(this.pin)
     },
     onChange: function() {
-      this.save()
+      save('fill_valve.status', this.status())
       events.emit('change', 'fill_valve.status', this.status())
     }
   },
@@ -145,14 +135,11 @@ const relays = {
     off: function() {
       this.status() && rpio.write(this.pin, rpio.HIGH)
     },
-    save: function() {
-      db.recorder('drain_pump.status', this.status)
-    },
     status: function() {
       return !rpio.read(this.pin)
     },
     onChange: function() {
-      this.save()
+      save('drain_pump.status', this.status())
       events.emit('change', 'drain_pump.status', this.status())
     }
   },
@@ -168,14 +155,11 @@ const relays = {
     off: function() {
       this.status() && rpio.write(this.pin, rpio.HIGH)
     },
-    save: function() {
-      db.recorder('grow_system_pumps.status', this.status)
-    },
     status: function() {
       return !rpio.read(this.pin)
     },
     onChange: function() {
-      this.save()
+      save('grow_system_pumps.status', this.status())
       events.emit('change', 'grow_system_pumps.status', this.status())
     }
   }
