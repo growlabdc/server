@@ -1,5 +1,7 @@
 const motorHat = require('motor-hat')
 
+const config = require('../config')
+
 const hat_one = motorHat(config.motor_hat_one.hat_config)
 const hat_two = motorHat(config.motor_hat_two.hat_config)
 

@@ -12,6 +12,8 @@ module.exports = {
   port: 8080,
   ssl_port: 3000,
 
+  automate: false,
+
   notification: {
     device_tokens: [],
     apn: {
@@ -67,8 +69,6 @@ module.exports = {
     drain_cycle_limit: 21,
     grow_limit: 12
   },
-
-  automate: false,
 
   ph: {
     automate: false,
