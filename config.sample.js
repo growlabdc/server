@@ -2,9 +2,12 @@ const path = require('path')
 
 module.exports = {
   level_db_path: '/tmp/level_db_data',
+  key_path: path.resolve('~/private.key'),
+  cert_path: path.resolve('~/growlab.crt'),
   grow_info_path: path.resolve('./grow.sample.json'),
   state_path: path.resolve('./state.json'),
   alerts_log_path: path.resolve('./alerts.log'),
+
   token: 'password',
   port: 8080,
   ssl_port: 3000,
@@ -18,8 +21,8 @@ module.exports = {
     }
   },
 
-  light_program: false,
   lights: {
+    automate: false,
     SEEDLING: {
       start: 10,
       end: 16
@@ -55,15 +58,24 @@ module.exports = {
       min: 0,
       max: 88000
     }
-  }
+  },
 
-  automate_water_level: false,
-  maximum_water_level: 10,
-  minimum_water_level: 24,
-  drain_cycle_level: 21,
-  grow_water_level: 12
+  water_level: {
+    automate: false,
+    maximum: 10,
+    minimum: 24,
+    drain_cycle_limit: 21,
+    grow_limit: 12
+  },
 
   automate: false,
+
+  ph: {
+    automate: false,
+    maximum: 6.5,
+    minimum: 5.5
+  },
+
   alerts: {
     ph: {
       minimum: 5.5,

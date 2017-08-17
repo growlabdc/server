@@ -3,6 +3,7 @@ const fs = require('fs')
 const jsonfile = require('jsonfile')
 const Logger = require('logplease');
 const logger = Logger.create('system')
+const moment = require('moment')
 
 const config = require('./config')
 
@@ -11,6 +12,7 @@ const db = require('./db')
 const system = {
   _data: {
     state: 'GROWING',
+    last_dose: null,
     drain_cycle: 0
   },
   events: new EventEmitter(),
@@ -54,6 +56,13 @@ const system = {
     logger.info('resetting drain cycle')
     this._data.drain_cycle = 0
     this.save()
+  },
+
+  getLastDose: function() {
+    return this._data.last_dose
+  },
+  setLastDose: function() {
+    this._data.last_dose = moment()
   }
 
 }

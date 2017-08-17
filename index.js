@@ -85,7 +85,7 @@ system.events.on('change', function(value) {
 const logging_interval = 1000 * 60 * 1 // every minute
 setInterval(sensors.record, logging_interval)
 
-if (config.light_program) {
+if (config.lights.automate) {
   const light_interval = 1000 * 60 * 1 // every minute
   setInterval(control.light_program, light_interval)
 }
