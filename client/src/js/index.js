@@ -104,10 +104,14 @@ App.api('/relay_status').get().success((data) => {
 App.api('/info').get().success((data) => {
   var start = new Date(data.started_at)
   var now = new Date()
-  var weeks = Math.round((now - start) / (7 * 24 * 60 * 60 * 1000))
+  var days = (now - start) / (24 * 60 * 60 * 1000)
+  var weeks = days / 7
+
   document.querySelector('#system-state').innerHTML = data.state
-  document.querySelector('#grow-stage').innerHTML = data.stage + ' (Week ' + weeks + ')'
-  document.querySelector('#grow-info').innerHTML = data.title + ' (' + data.strain + ')'
+  document.querySelector('#grow-stage').innerHTML = data.stage
+
+  var info = 'Week ' + Math.round(weeks) + ' - Day ' + Math.round(days) + ' - ' + data.strain
+  document.querySelector('#grow-info').innerHTML = info
 }).error((err) => {
   console.error(err)
 })
@@ -117,9 +121,8 @@ d3.json('/api/bucket/4/temperature?start=' + start.toString() + '&end=' + end.to
   MG.data_graphic({
     data: data,
     full_width: true,
-    height: 150,
+    height: 200,
     area: true,
-    right: 40,
     target: document.getElementById('reservoir-temperature-chart'),
     missing_is_hidden: true,
     show_tooltips: false,
@@ -133,14 +136,15 @@ d3.json('/api/tent/temperature?start=' + start.toString() + '&end=' + end.toStri
   MG.data_graphic({
     data: data,
     full_width: true,
-    height: 150,
+    height: 200,
     area: true,
-    right: 40,
     target: document.getElementById('tent-temperature-chart'),
     missing_is_hidden: true,
     show_tooltips: false,
     x_accessor: 'timestamp',
-    y_accessor: 'value'
+    y_accessor: 'value',
+    max_y: 28,
+    min_y: 20
   });
 });
 
@@ -149,9 +153,8 @@ d3.json('/api/tent/humidity?start=' + start.toString() + '&end=' + end.toString(
   MG.data_graphic({
     data: data,
     full_width: true,
-    height: 150,
+    height: 200,
     area: true,
-    right: 40,
     target: document.getElementById('tent-humidity-chart'),
     missing_is_hidden: true,
     show_tooltips: false,
@@ -165,9 +168,8 @@ d3.json('/api/reservoir/water_level?start=' + start.toString() + '&end=' + end.t
   MG.data_graphic({
     data: data,
     full_width: true,
-    height: 150,
+    height: 200,
     area: true,
-    right: 40,
     target: document.getElementById('reservoir-water-level-chart'),
     missing_is_hidden: true,
     show_tooltips: false,
@@ -181,9 +183,8 @@ d3.json('/api/reservoir/ph?start=' + start.toString() + '&end=' + end.toString()
   MG.data_graphic({
     data: data,
     full_width: true,
-    height: 150,
+    height: 200,
     area: true,
-    right: 40,
     target: document.getElementById('reservoir-ph-chart'),
     missing_is_hidden: true,
     show_tooltips: false,
@@ -197,9 +198,8 @@ d3.json('/api/tent/illuminance?start=' + start.toString() + '&end=' + end.toStri
   MG.data_graphic({
     data: data,
     full_width: true,
-    height: 150,
+    height: 200,
     area: true,
-    right: 40,
     target: document.getElementById('tent-illuminance-chart'),
     missing_is_hidden: true,
     show_tooltips: false,
