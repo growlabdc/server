@@ -2,6 +2,7 @@ const moment = require('moment')
 
 const config = require('./config')
 const relays = require('./utils/relays')
+const pumps = require('./utils/pumps')
 const system = require('./system')
 const grow = require('./grow')
 
@@ -40,7 +41,20 @@ const evaluate_ph = function(ph) {
   if (system.getState() !== 'GROWING')
     return
 
-  // evalute ph
+  if (!config.ph.automate)
+    return
+
+  const now = moment()
+  if (system.getLastDose() && system.getLastDose().isAfter(now.substract(1, 'hours')))
+    return
+
+  if (ph < config.ph.minimum) {
+    pumps.ph.up.add(1)
+    system.setLastDose()
+  } else if (ph > config.ph.maximum) {
+    pumps.ph.down.add(1)
+    system.setLastDose()
+  }
 }
 
 const evaluate_water_level = function(water_level) {
@@ -48,15 +62,15 @@ const evaluate_water_level = function(water_level) {
 
     relays.drain_pump.off()
 
-    if (!config.automate_water_level) {
+    if (!config.water_level.automate) {
       relays.fill_valve.off()
       relays.drain_valve.off()
       return
     }
 
-    if (water_level < config.maximum_water_level) {
+    if (water_level < config.water_level.maximum) {
       relays.drain_valve.on()
-    } else if (water_level > config.grow_water_level) {
+    } else if (water_level > config.water_level.grow_limit) {
       relays.fill_valve.on()
     } else {
       relays.fill_valve.off()
@@ -70,7 +84,7 @@ const evaluate_water_level = function(water_level) {
 
     //INFO: water level is depicted by distance from lid to water
 
-    if (water_level >= config.minimum_water_level) {
+    if (water_level >= config.water_level.minimum) {
       system.setState('FILLING')
       relays.drain_valve.off()
       relays.drain_pump.off()
@@ -83,13 +97,13 @@ const evaluate_water_level = function(water_level) {
 
   } else if (system.getState() === 'FILLING'){
 
-    if (system.getDrainCycle() < 2 && water_level <= config.drain_cycle_level) {
+    if (system.getDrainCycle() < 2 && water_level <= config.water_level.drain_cycle_limit) {
       system.setState('DRAINING')
       system.increaseDrainCycle()
       relays.drain_valve.on()
       relays.drain_pump.on()
       relays.fill_valve.off()
-    } else if (water_level <= config.maximum_water_level) {
+    } else if (water_level <= config.water_level.maximum) {
       system.setState('GROWING')
       system.resetDrainCycle()
       relays.fill_valve.off()
