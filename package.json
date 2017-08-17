@@ -14,6 +14,7 @@
     "logplease": "^1.2.13",
     "moment": "^2.18.1",
     "motor-hat": "^1.2.1",
+    "request": "^2.81.0",
     "rpio": "^0.9.17",
     "serialport": "^5.0.0",
     "socket.io": "^2.0.3",
