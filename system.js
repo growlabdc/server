@@ -6,6 +6,8 @@ const logger = Logger.create('system')
 
 const config = require('./config')
 
+const db = require('./db')
+
 const system = {
   _data: {
     state: 'GROWING',
@@ -25,10 +27,15 @@ const system = {
     this._data = data
   },
 
+  record: function() {
+    db.recorder('system.state', this._data.state)
+  },
+
   setState: function(value) {
     logger.info(`changing system state: ${value}`)
     this._data.state = value
     this.save()
+    this.record()
     this.events.emit('change', value)
   },
   getState: function() {
