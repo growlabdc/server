@@ -208,6 +208,26 @@ router.get('/info', function(req, res) {
   res.status(200).json(result)
 })
 
+router.get('/:key', function(req, res) {
+  const result = []
+  const start = req.query.start && new Date(parseInt(req.query.start, 10)).getTime()
+  const end = req.query.end && new Date(parseInt(req.query.end, 10)).getTime()
+
+  db.valuestream(req.params.key, {
+    start: start,
+    end: end
+  }).pipe(through(function(data){
+
+    result.push({
+      timestamp: data.key,
+      value: data.value
+    })
+
+  }, function(){
+    res.status(200).json(result)
+  }))
+})
+
 module.exports = router
 
 
