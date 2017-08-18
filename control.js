@@ -28,11 +28,15 @@ const evaluate = function(sensor_item) {
 const evaluate_temperature = function(temperature) {
   if (temperature >= 25) {
     relays.ac.on()
-    relays.exhaust.off()
-  } else if (temperature >= 23.8 && relays.ac.status()) {
-    relays.exhaust.on()
+  } else if (relays.ac.status() && temperature > 23.3) {
+    relays.ac.on()
   } else {
     relays.ac.off()
+  }
+
+  if (relays.light.status() && temperature > 24) {
+    relays.exhaust.on()
+  } else {
     relays.exhaust.off()
   }
 }
@@ -45,14 +49,14 @@ const evaluate_ph = function(ph) {
     return
 
   const now = moment()
-  if (system.getLastDose() && system.getLastDose().isAfter(now.substract(1, 'hours')))
+  if (system.getLastDose() && system.getLastDose().isAfter(now.subtract(1, 'hours')))
     return
 
   if (ph < config.ph.minimum) {
-    pumps.ph.up.add(1)
+    pumps.pH.up.add(1)
     system.setLastDose()
   } else if (ph > config.ph.maximum) {
-    pumps.ph.down.add(1)
+    pumps.pH.down.add(1)
     system.setLastDose()
   }
 }

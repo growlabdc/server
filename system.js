@@ -27,6 +27,9 @@ const system = {
 
     let data = jsonfile.readFileSync(config.state_path)
     this._data = data
+
+    if (data.last_dose)
+      this._data.last_dose = moment(data.last_dose)
   },
 
   record: function() {
@@ -63,6 +66,7 @@ const system = {
   },
   setLastDose: function() {
     this._data.last_dose = moment()
+    this.save()
   }
 
 }
