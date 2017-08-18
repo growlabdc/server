@@ -64,7 +64,7 @@ const relays = {
     }
   },
   exhaust: {
-    pin: 12,
+    pin: 6,
     setup: function() {
       rpio.open(this.pin, rpio.OUTPUT)
       rpio.poll(this.pin, this.onChange.bind(this))
@@ -124,7 +124,7 @@ const relays = {
     }
   },
   drain_pump: {
-    pin: 6,
+    pin: 12,
     setup: function() {
       rpio.open(this.pin, rpio.OUTPUT)
       rpio.poll(this.pin, this.onChange.bind(this))
