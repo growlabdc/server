@@ -12,6 +12,10 @@ const evaluate = function(sensor_item) {
       evaluate_temperature(sensor_item.data.value)
       break;
 
+    case 'tent.humidity':
+      evaluate_humidity(sensor_item.data.value)
+      break;
+
     case 'reservoir.ph':
       evaluate_ph(sensor_item.data.value)
       break;
@@ -25,19 +29,20 @@ const evaluate = function(sensor_item) {
   }
 }
 
-const evaluate_temperature = function(temperature) {
-  if (temperature >= 25) {
-    relays.ac.on()
-  } else if (relays.ac.status() && temperature > 23.3) {
-    relays.ac.on()
-  } else {
-    relays.ac.off()
-  }
-
-  if (relays.light.status() && temperature > 24) {
+const evaluate_humidity = function(humidity) {
+  if (!relays.light.status() && !relays.ac.status() && humidity > 80) {
     relays.exhaust.on()
   } else {
     relays.exhaust.off()
+  }
+}
+
+const evaluate_temperature = function(temperature) {
+  if (temperature >= 25) {
+    relays.ac.on()
+    relays.exhaust.off()
+  } else if (temperature < 23.3) {
+    relays.ac.off()
   }
 }
 
@@ -49,7 +54,7 @@ const evaluate_ph = function(ph) {
     return
 
   const now = moment()
-  if (system.getLastDose() && system.getLastDose().isAfter(now.subtract(1, 'hours')))
+  if (system.getLastDose() && system.getLastDose().isAfter(now.subtract(15, 'minutes')))
     return
 
   if (ph < config.ph.minimum) {
