@@ -5,7 +5,7 @@ const logger = Logger.create('bin')
 const argv = require('yargs').argv
 
 const now = new Date().getTime()
-const start = new Date().setTime(now - (1000 * 60 * 30))
+const start = new Date().setTime(now - (1000 * 60 * 60 * 24))
 
 const key = argv.key || 'ac.status'
 logger.info(`Key: ${key}`)

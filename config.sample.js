@@ -110,7 +110,8 @@ module.exports = {
 
   motor_hat_one: {
     hat_config: {
-      dcs: ['M1','M2','M3','M4']
+      dcs: ['M1','M2','M3','M4'],
+      address: 0x6F,
     },
     motor_config: [{
       speed: 78
