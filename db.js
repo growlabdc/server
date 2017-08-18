@@ -3,4 +3,7 @@ const leveldb = require('level')(config.level_db_path)
 const lem = require('lem')
 const lemdb = lem(leveldb)
 
-module.exports = lemdb
+module.exports = {
+  leveldb: leveldb,
+  lemdb: lemdb
+}

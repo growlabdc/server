@@ -3,13 +3,13 @@ const EventEmitter = require('events').EventEmitter
 
 rpio.init({ mapping: 'gpio' })
 
-const db = require('../db')
+const lemdb = require('../db').lemdb
 
 const events = new EventEmitter()
 
 const save = function(key, status) {
   const value = status ? '1' : '0'
-  db.recorder(key)(value)
+  lemdb.recorder(key)(value)
 }
 
 const relays = {

@@ -7,7 +7,7 @@ const moment = require('moment')
 
 const config = require('./config')
 
-const db = require('./db')
+const lemdb = require('./db').lemdb
 
 const system = {
   _data: {
@@ -30,7 +30,7 @@ const system = {
   },
 
   record: function() {
-    db.recorder('system.state')(this._data.state)
+    lemdb.recorder('system.state')(this._data.state)
   },
 
   setState: function(value) {

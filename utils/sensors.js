@@ -1,5 +1,5 @@
 const config = require('../config')
-const db = require('../db')
+const lemdb = require('../db').lemdb
 const alerts = require('./alerts')
 
 let sensor_data = {
@@ -31,7 +31,7 @@ const getAverage = function(key) {
 const record = function() {
   Object.keys(sensor_data).forEach(function(data_key,index) {
     const average = getAverage(data_key)
-    db.recorder(data_key)(average)
+    lemdb.recorder(data_key)(average)
     sensor_data[data_key] = [] // reset values
   })
 }
@@ -52,10 +52,10 @@ const isValid = function(sensor_item) {
 
   if (limits) {
     if (sensor_item.data.value < limits.min)
-      return true
+      return false
 
     if (sensor_item.data.value > limits.max)
-      return true
+      return false
   }
 
   if (parseInt(average, 10) === 0)
