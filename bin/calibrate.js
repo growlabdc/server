@@ -1,4 +1,4 @@
-const logger = require('logplease')
+const Logger = require('logplease')
 
 const argv = require('yargs').argv
 
@@ -13,14 +13,26 @@ const run = function() {
   pumps.pH.down.motor.run('fwd')
 }
 
-setInterval(run, 3000)
+const stop = function() {
+  pumps.pH.up.motor.stop()
+  pumps.pH.down.motor.stop()
+  process.exit()
+
+}
+
+const dose = function() {
+  run()
+  setInterval(stop, 1500)
+}
+
+dose()
 
 function exitHandler(options, err) {
   pumps.pH.up.motor.stop()
   pumps.pH.down.motor.stop()
 
   if (err) console.log(err.stack)
-  
+
   process.exit()
 }
 
