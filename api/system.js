@@ -4,16 +4,6 @@ const router = express.Router()
 const config = require('../config')
 const system = require('../system')
 
-router.use(function(req, res, next) {
-  const token = req.query.token
-
-  if (!token || token !== config.token) {
-    res.status(401).json({message: 'token missing or not valid'})
-  } else {
-    next()
-  }
-})
-
 router.get('/', function(req, res) {
   const options = ['DRAINING','FILLING','GROWING']
   const state = req.query.state

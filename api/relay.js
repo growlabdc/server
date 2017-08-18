@@ -4,16 +4,6 @@ const router = express.Router()
 const relays = require('../utils/relays')
 const config = require('../config')
 
-router.use(function(req, res, next) {
-  const token = req.query.token
-
-  if (!token || token !== config.token) {
-    res.status(401).json({message: 'token missing or not valid'})
-  } else {
-    next()
-  }
-})
-
 router.get('/ac', function(req, res) {
   try {
     const on = req.query.on === 'true'

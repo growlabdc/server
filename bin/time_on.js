@@ -5,7 +5,7 @@ const logger = Logger.create('bin')
 const argv = require('yargs').argv
 
 const now = new Date().getTime()
-const start = new Date().setTime(now - (1000 * 60 * 60 * 24))
+const start = new Date().setTime(now - (1000 * 60 * 30))
 
 const key = argv.key || 'ac.status'
 logger.info(`Key: ${key}`)
@@ -42,7 +42,7 @@ request({
       count_off++
 
       if (start) {
-	const secs = item.timestamp - start
+	const secs = Math.round((item.timestamp - start) / 1000)
 	duration += secs
       }
 
@@ -52,5 +52,5 @@ request({
 
   logger.info(`On: ${count_on}`)
   logger.info(`Off: ${count_off}`)
-  logger.info(`Duration (secs): ${Math.round(duration / 1000)}`)
+  logger.info(`Duration (secs): ${duration}`)
 })

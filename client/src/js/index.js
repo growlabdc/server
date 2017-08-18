@@ -89,18 +89,6 @@ socket.on('system.state', (value) => {
   document.querySelector('#system-state').innerHTML = value
 })
 
-App.api('/relay_status').get().success((data) => {
-  document.querySelector('#ac-status').innerHTML = App.status(data.ac)
-  document.querySelector('#light-status').innerHTML = App.status(data.light)
-  document.querySelector('#exhaust-status').innerHTML = App.status(data.exhaust)
-  document.querySelector('#drain-valve-status').innerHTML = App.status(data.drain_valve)
-  document.querySelector('#fill-valve-status').innerHTML = App.status(data.fill_valve)
-  document.querySelector('#drain-pump-status').innerHTML = App.status(data.drain_pump)
-  document.querySelector('#grow-system-pumps-status').innerHTML = App.status(data.grow_system_pumps)
-}).error((err) => {
-  console.error(err)
-})
-
 App.api('/info').get().success((data) => {
   var start = new Date(data.started_at)
   var now = new Date()
@@ -112,11 +100,20 @@ App.api('/info').get().success((data) => {
 
   var info = 'Week ' + Math.round(weeks) + ' - Day ' + Math.round(days) + ' - ' + data.strain
   document.querySelector('#grow-info').innerHTML = info
+
+  document.querySelector('#ac-status').innerHTML = App.status(data.relays.ac)
+  document.querySelector('#light-status').innerHTML = App.status(data.relays.light)
+  document.querySelector('#exhaust-status').innerHTML = App.status(data.relays.exhaust)
+  document.querySelector('#drain-valve-status').innerHTML = App.status(data.relays.drain_valve)
+  document.querySelector('#fill-valve-status').innerHTML = App.status(data.relays.fill_valve)
+  document.querySelector('#drain-pump-status').innerHTML = App.status(data.relays.drain_pump)
+  document.querySelector('#grow-system-pumps-status').innerHTML = App.status(data.relays.grow_system_pumps)
+
 }).error((err) => {
   console.error(err)
 })
 
-d3.json('/api/bucket/4/temperature?start=' + start.toString() + '&end=' + end.toString(), function(data) {
+d3.json('/api/bucket.4.temperature?start=' + start.toString() + '&end=' + end.toString(), function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
   MG.data_graphic({
     data: data,
@@ -131,7 +128,7 @@ d3.json('/api/bucket/4/temperature?start=' + start.toString() + '&end=' + end.to
   });
 });
 
-d3.json('/api/tent/temperature?start=' + start.toString() + '&end=' + end.toString(), function(data) {
+d3.json('/api/tent.temperature?start=' + start.toString() + '&end=' + end.toString(), function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
   MG.data_graphic({
     data: data,
@@ -148,7 +145,7 @@ d3.json('/api/tent/temperature?start=' + start.toString() + '&end=' + end.toStri
   });
 });
 
-d3.json('/api/tent/humidity?start=' + start.toString() + '&end=' + end.toString(), function(data) {
+d3.json('/api/tent.humidity?start=' + start.toString() + '&end=' + end.toString(), function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
   MG.data_graphic({
     data: data,
@@ -163,7 +160,7 @@ d3.json('/api/tent/humidity?start=' + start.toString() + '&end=' + end.toString(
   });
 });
 
-d3.json('/api/reservoir/water_level?start=' + start.toString() + '&end=' + end.toString(), function(data) {
+d3.json('/api/reservoir.water_level?start=' + start.toString() + '&end=' + end.toString(), function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
   MG.data_graphic({
     data: data,
@@ -178,7 +175,7 @@ d3.json('/api/reservoir/water_level?start=' + start.toString() + '&end=' + end.t
   });
 });
 
-d3.json('/api/reservoir/ph?start=' + start.toString() + '&end=' + end.toString(), function(data) {
+d3.json('/api/reservoir.ph?start=' + start.toString() + '&end=' + end.toString(), function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
   MG.data_graphic({
     data: data,
@@ -193,7 +190,7 @@ d3.json('/api/reservoir/ph?start=' + start.toString() + '&end=' + end.toString()
   });
 });
 
-d3.json('/api/tent/illuminance?start=' + start.toString() + '&end=' + end.toString(), function(data) {
+d3.json('/api/tent.illuminance?start=' + start.toString() + '&end=' + end.toString(), function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
   MG.data_graphic({
     data: data,
