@@ -1,5 +1,6 @@
 const motorHat = require('motor-hat')
 
+const lemdb = require('../db').lemdb
 const config = require('../config')
 
 const hat_one = motorHat(config.motor_hat_one.hat_config)
@@ -24,6 +25,8 @@ const motors = {
 	const dose = value || this.base_dose
 	const timeout = 1800 * dose
 
+	lemdb.recorder('ph.up')(dose)
+
 	this.motor.run('fwd')
 	setTimeout(this.motor.stop, timeout)
       }
@@ -34,6 +37,8 @@ const motors = {
       add: function(value) {
 	const dose = value || this.base_dose
 	const timeout = 1800 * dose
+
+	lemdb.recorder('ph.down')(dose)
 
 	this.motor.run('fwd')
 	setTimeout(this.motor.stop, timeout)
@@ -49,6 +54,8 @@ const motors = {
 	const dose = value || this.base_dose
 	const timeout = 1800 * dose
 
+	lemdb.recorder('nutrients.basis_a')(dose)
+
 	this.motor.run('fwd')
 	setTimeout(this.motor.stop, timeout)
       }
@@ -59,6 +66,8 @@ const motors = {
       add: function() {
 	const dose = value || this.base_dose
 	const timeout = 1800 * dose
+
+	lemdb.recorder('nutrients.basis_b')(dose)
 
 	this.motor.run('fwd')
 	setTimeout(this.motor.stop, timeout)
@@ -71,6 +80,8 @@ const motors = {
 	const dose = value || this.base_dose
 	const timeout = 1800 * dose
 
+	lemdb.recorder('nutrients.start_r')(dose)
+
 	this.motor.run('fwd')
 	setTimeout(this.motor.stop, timeout)
       }
@@ -81,6 +92,8 @@ const motors = {
       add: function() {
 	const dose = value || this.base_dose
 	const timeout = 1800 * dose
+
+	lemdb.recorder('nutrients.vitalize')(dose)
 
 	this.motor.run('fwd')
 	setTimeout(this.motor.stop, timeout)
@@ -93,6 +106,8 @@ const motors = {
 	const dose = value || this.base_dose
 	const timeout = 1800 * dose
 
+	lemdb.recorder('nutrients.c4')(dose)
+
 	this.motor.run('fwd')
 	setTimeout(this.motor.stop, timeout)
       }
@@ -103,6 +118,8 @@ const motors = {
       add: function() {
 	const dose = value || this.base_dose
 	const timeout = 1800 * dose
+
+	lemdb.recorder('nutrients.pk_boost')(dose)
 
 	this.motor.run('fwd')
 	setTimeout(this.motor.stop, timeout)
