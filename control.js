@@ -6,6 +6,8 @@ const pumps = require('./utils/pumps')
 const system = require('./system')
 const grow = require('./grow')
 
+const sendNotification = require('./utils/notification').sendNotification
+
 const evaluate = function(sensor_item) {
   switch(sensor_item.data.key) {
     case 'tent.temperature':
@@ -57,12 +59,22 @@ const evaluate_ph = function(ph) {
   if (system.getLastDose() && system.getLastDose().isAfter(now.subtract(15, 'minutes')))
     return
 
+  const log = (up) => {
+    system.setLastDose()
+
+    if (config.notification)
+      sendNotification({
+	title: up ? 'pH up' : 'pH down',
+	body: ph
+      })
+  }
+
   if (ph < config.ph.minimum) {
     pumps.pH.up.add(1)
-    system.setLastDose()
+    log(true)
   } else if (ph > config.ph.maximum) {
     pumps.pH.down.add(1)
-    system.setLastDose()
+    log(false)
   }
 }
 
