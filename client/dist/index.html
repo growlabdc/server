@@ -1045,7 +1045,7 @@ App.api('/info').get().success((data) => {
   document.querySelector('#system-state').innerHTML = data.state
   document.querySelector('#grow-stage').innerHTML = data.stage
 
-  var info = 'Week ' + Math.round(weeks) + ' - Day ' + Math.round(days) + ' - ' + data.strain
+  var info = 'Week ' + Math.ceil(weeks) + ' - Day ' + Math.round(days) + ' - ' + data.strain
   document.querySelector('#grow-info').innerHTML = info
 
   document.querySelector('#ac-status').innerHTML = App.status(data.relays.ac)
