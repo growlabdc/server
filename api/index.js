@@ -9,6 +9,7 @@ const lemdb = require('../db').lemdb
 const leveldb = require('../db').leveldb
 const relay_router = require('./relay')
 const system_router = require('./system')
+const pumps_router = require('./pumps')
 const system = require('../system')
 const grow = require(config.grow_info_path)
 
@@ -25,6 +26,7 @@ const authenticate = function(req, res, next) {
 router.all('/control', authenticate)
 router.use('/control/relays', relay_router)
 router.use('/control/system', system_router)
+router.use('/control/pumps', pumps_router)
 
 router.get('/info', function(req, res) {
   const result = {
