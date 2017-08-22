@@ -56,7 +56,7 @@ const evaluate_ph = function(ph) {
     return
 
   const now = moment()
-  if (system.getLastDose() && system.getLastDose().isAfter(now.subtract(15, 'minutes')))
+  if (system.getLastDose() && system.getLastDose().isAfter(now.subtract(30, 'minutes')))
     return
 
   const log = (up) => {
