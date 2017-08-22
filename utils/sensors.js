@@ -43,11 +43,6 @@ const evaluate = function(sensor_item) {
 }
 
 const isValid = function(sensor_item) {
-  if (!sensor_data[sensor_item.data.key].length)
-    return true
-
-  const average = getAverage(sensor_item.data.key)
-
   const limits = config.sensors[sensor_item.type]
 
   if (limits) {
@@ -57,6 +52,11 @@ const isValid = function(sensor_item) {
     if (sensor_item.data.value > limits.max)
       return false
   }
+
+  if (!sensor_data[sensor_item.data.key].length)
+    return true
+
+  const average = getAverage(sensor_item.data.key)
 
   if (parseInt(average, 10) === 0)
     return true
