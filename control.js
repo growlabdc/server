@@ -101,6 +101,13 @@ const evaluate_water_level = function(water_level) {
     return
   }
 
+
+  if (water_level > config.water_level.pump_limit)
+    relays.grow_system_pumps.off()
+  else
+    relays.grow_system_pumps.on()
+
+
   if (system.getState() === 'DRAINING') {
 
     //INFO: water level is depicted by distance from lid to water

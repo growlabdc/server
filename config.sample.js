@@ -66,7 +66,8 @@ module.exports = {
     automate: false,
     maximum: 10,
     minimum: 24,
-    drain_cycle_limit: 21,
+    drain_cycle_limit: 14,
+    pump_limit:18
     grow_limit: 12
   },
 
