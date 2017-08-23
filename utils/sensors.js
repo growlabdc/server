@@ -61,7 +61,7 @@ const isValid = function(sensor_item) {
   if (parseInt(average, 10) === 0)
     return true
 
-  return Math.abs((sensor_item.data.value - average) / average * 100) < 15
+  return Math.abs((sensor_item.data.value - average) / average * 100) < 20
 }
 
 module.exports = {
