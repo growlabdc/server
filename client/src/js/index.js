@@ -1,9 +1,37 @@
+const sensors = {
+  temperature: null,
+  humidity: null
+}
+
 function setCamera(e, src) {
   document.getElementById('camera').src = src
   Elem.each(document.querySelectorAll('.camera-action'), function(elem) {
     elem.classList.remove('active')
   })
   e.target.classList.add('active')
+}
+
+function getSVP(temp) {
+  return 610.7 * (Math.pow(10, (7.5 * temp / (237.3 + temp))))
+}
+
+function getVPD(temp, hum) {
+  const svp = getSVP(temp)
+  const vpd = (((100 - hum) / 100) * svp) / 1000
+  return {
+    svp,
+    vpd
+  }
+}
+
+function updateVPD() {
+  if (!sensors.temperature || !sensors.humidity)
+    return
+
+  const data = getVPD(sensors.temperature, sensors.humidity)
+
+  document.querySelector('#svp').innerHTML = 'SVP: ' + (data.svp / 1000).toFixed(3)
+  document.querySelector('#vpd').innerHTML = 'VPD: ' + data.vpd.toFixed(3)
 }
 
 var socket = io()
@@ -25,11 +53,15 @@ socket.on('reservoir.ph', (value) => {
 socket.on('tent.humidity', (value) => {
   document.querySelector('#tent-humidity').innerHTML = value + '%'
   App.log('info', 'tent.humidity', value)
+  sensors.humidity = value
+  updateVPD()
 })
 
 socket.on('tent.temperature', (value) => {
   document.querySelector('#tent-temperature').innerHTML = value + '°C'
   App.log('info', 'tent.temperature', value)
+  sensors.temperature = value
+  updateVPD()
 })
 
 socket.on('reservoir.water_level', (value) => {
