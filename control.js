@@ -32,7 +32,7 @@ const evaluate = function(sensor_item) {
 }
 
 const evaluate_humidity = function(humidity) {
-  if (!relays.light.status() && !relays.ac.status() && humidity > 80) {
+  if (!relays.light.status() && !relays.ac.status() && humidity > 60) {
     relays.exhaust.on()
   } else {
     relays.exhaust.off()
