@@ -23,6 +23,15 @@ const relays = {
     this.fill_valve.setup()
     this.drain_pump.setup()
   },
+  off: function() {
+    this.ac.off()
+    this.light.off()
+    this.exhaust.off()
+    this.grow_system_pumps.off()
+    this.drain_valve.off()
+    this.fill_valve.off()
+    this.drain_pump.off()
+  },
   ac: {
     pin: 27,
     setup: function() {

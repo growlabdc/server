@@ -1066,6 +1066,10 @@ socket.on('system.state', (value) => {
   document.querySelector('#system-state').innerHTML = value
 })
 
+socket.on('system.override', (value) => {
+  console.log('System Override:', value)
+})
+
 App.api('/info').get().success((data) => {
   var start = new Date(data.started_at)
   var now = new Date()
