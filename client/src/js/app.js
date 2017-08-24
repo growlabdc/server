@@ -8,7 +8,7 @@
 
   return {
     api: function(path) {
-      path = '/api' + path
+      path = 'https://growlab.space/api' + path
       return {
 	get: function(params) {
 	  params = params || {}

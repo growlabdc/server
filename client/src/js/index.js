@@ -1,3 +1,4 @@
+const API = 'https://growlab.space/api'
 const sensors = {
   temperature: null,
   humidity: null
@@ -34,10 +35,7 @@ function updateVPD() {
   document.querySelector('#vpd').innerHTML = 'VPD: ' + data.vpd.toFixed(3)
 }
 
-var socket = io()
-
-var end = new Date().getTime()
-var start = new Date().setTime(end - (12*60*60*1000))
+var socket = io('https://growlab.space/')
 
 socket.on('bucket.4.temperature', (value) => {
   //TODO: evaluate range
@@ -145,7 +143,13 @@ App.api('/info').get().success((data) => {
   console.error(err)
 })
 
-d3.json('/api/bucket.4.temperature?start=' + start.toString() + '&end=' + end.toString(), function(data) {
+var end = new Date().getTime()
+var start = new Date().setTime(end - (12*60*60*1000))
+
+end = end.toString()
+start = start.toString()
+
+d3.json(`${API}/bucket.4.temperature?start=${start}end=${end}`, function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
   MG.data_graphic({
     data: data,
@@ -160,7 +164,7 @@ d3.json('/api/bucket.4.temperature?start=' + start.toString() + '&end=' + end.to
   });
 });
 
-d3.json('/api/tent.temperature?start=' + start.toString() + '&end=' + end.toString(), function(data) {
+d3.json(`${API}/tent.temperature?start=${start}end=${end}`, function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
   MG.data_graphic({
     data: data,
@@ -177,7 +181,7 @@ d3.json('/api/tent.temperature?start=' + start.toString() + '&end=' + end.toStri
   });
 });
 
-d3.json('/api/tent.humidity?start=' + start.toString() + '&end=' + end.toString(), function(data) {
+d3.json(`${API}/tent.humidity?start=${start}end=${end}`, function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
   MG.data_graphic({
     data: data,
@@ -192,7 +196,7 @@ d3.json('/api/tent.humidity?start=' + start.toString() + '&end=' + end.toString(
   });
 });
 
-d3.json('/api/reservoir.water_level?start=' + start.toString() + '&end=' + end.toString(), function(data) {
+d3.json(`${API}/reservoir.water_level?start=${start}end=${end}`, function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
   MG.data_graphic({
     data: data,
@@ -207,7 +211,7 @@ d3.json('/api/reservoir.water_level?start=' + start.toString() + '&end=' + end.t
   });
 });
 
-d3.json('/api/reservoir.ph?start=' + start.toString() + '&end=' + end.toString(), function(data) {
+d3.json(`${API}/reservoir.ph?start=${start}end=${end}`, function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
   MG.data_graphic({
     data: data,
@@ -222,7 +226,7 @@ d3.json('/api/reservoir.ph?start=' + start.toString() + '&end=' + end.toString()
   });
 });
 
-d3.json('/api/tent.illuminance?start=' + start.toString() + '&end=' + end.toString(), function(data) {
+d3.json(`${API}/tent.illuminance?start=${start}end=${end}`, function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
   MG.data_graphic({
     data: data,
