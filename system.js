@@ -12,6 +12,7 @@ const lemdb = require('./db').lemdb
 const system = {
   _data: {
     state: 'GROWING',
+    override: false,
     last_dose: null,
     drain_cycle: 0
   },
@@ -26,10 +27,12 @@ const system = {
       return this.save()
 
     let data = jsonfile.readFileSync(config.state_path)
-    this._data = data
+    Object.assign(this._data, data)
 
     if (data.last_dose)
       this._data.last_dose = moment(data.last_dose)
+
+    logger.info('system:', this._data)
   },
 
   record: function() {
@@ -41,7 +44,7 @@ const system = {
     this._data.state = value
     this.save()
     this.record()
-    this.events.emit('change', value)
+    this.events.emit('state', value)
   },
   getState: function() {
     return this._data.state
@@ -67,6 +70,15 @@ const system = {
   setLastDose: function() {
     this._data.last_dose = moment()
     this.save()
+  },
+
+  setOverride: function(value) {
+    this._data.override = value
+    this.events.emit('override', value)
+    this.save()
+  },
+  isOverrided: function() {
+    return this._data.override
   }
 
 }

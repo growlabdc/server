@@ -83,13 +83,23 @@ relays.events.on('change', (type, status) => {
   io.sockets.emit(type, status)
 })
 
-system.events.on('change', function(value) {
+system.events.on('state', function(value) {
   io.sockets.emit('system.state', value)
 
   if (config.notification)
     sendNotification({
       title: 'System State Changed',
       body: value
+    })
+})
+
+system.events.on('override', function(value) {
+  io.sockets.emit('system.override', value)
+
+  if (config.notification)
+    sendNotification({
+      title: 'System Override',
+      body: value ? 'On' : 'Off'
     })
 })
 
@@ -114,7 +124,7 @@ serial.on('data', (message) => {
 
   sensors.evaluate(item)
 
-  if (config.automate)
+  if (config.automate && !system.isOverrided())
     control.evaluate(item)
 
   io.sockets.emit(item.data.key, item.data.value)

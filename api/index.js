@@ -31,6 +31,7 @@ router.use('/control/pumps', pumps_router)
 router.get('/info', function(req, res) {
   const result = {
     state: system.getState(),
+    override: system.isOverrided(),
     stage: grow.stage,
     strain: grow.strain,
     started_at: grow.started_at,

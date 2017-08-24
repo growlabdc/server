@@ -29,7 +29,7 @@ module.exports = {
       start: 10,
       end: 16
     },
-    VEGATATIVE: {
+    VEGETATIVE: {
       start: 10,
       end: 16
     },
