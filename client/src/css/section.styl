@@ -9,7 +9,6 @@ section
     position relative
     border 1px solid $alt
     margin 15px
-    padding 15px 0
     color white
     text-align center
     &.section-container
@@ -28,6 +27,16 @@ section
         max-height 300px
         width 100%
 
+.sub-section
+    position relative
+    border-top 1px solid $alt
+    &:before
+        absolute top -15px left 10px
+        content attr(data-label)
+        background $background
+        color $alt
+        padding 5px
+
 .section-meta
     absolute top 5px right 5px
 
@@ -42,6 +51,9 @@ section
         text-align right
 
 .section-meta-alt
+    padding-bottom 15px
+
+.section-meta-alt
 .section-actions
     span + span
         margin-left 10px
@@ -53,6 +65,7 @@ section
             color rgba(255,255,255,0.2)
 
 .section-main
+    padding-top 15px
     font-size 3em
 
 @media (min-width: 800px)
