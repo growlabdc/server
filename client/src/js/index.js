@@ -168,37 +168,80 @@ d3.json(`${API}/bucket.4.temperature?start=${start}end=${end}`, function(data) {
   });
 });
 
-d3.json(`${API}/tent.temperature?start=${start}end=${end}`, function(data) {
-  data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
-  MG.data_graphic({
-    data: data,
-    full_width: true,
-    height: 200,
-    area: true,
-    target: document.getElementById('tent-temperature-chart'),
-    missing_is_hidden: true,
-    show_tooltips: false,
-    x_accessor: 'timestamp',
-    y_accessor: 'value',
-    max_y: 28,
-    min_y: 20
-  });
-});
+App.api('/light.status').get({
+  start: new Date().setTime(end - (24*60*60*1000)),
+  end: end
+}).success((data) => {
 
-d3.json(`${API}/tent.humidity?start=${start}end=${end}`, function(data) {
-  data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
-  MG.data_graphic({
-    data: data,
-    full_width: true,
-    height: 200,
-    area: true,
-    target: document.getElementById('tent-humidity-chart'),
-    missing_is_hidden: true,
-    show_tooltips: false,
-    x_accessor: 'timestamp',
-    y_accessor: 'value'
+  let status = data[0].value
+  let markers = []  
+
+  data.forEach((d) => {
+    if (status !== d.value)
+      d.value === 1 ? markers.push({
+	timestamp: new Date(d.timestamp),
+	label: 'light on'
+      }) : markers.push({
+	timestamp: new Date(d.timestamp),
+	label: 'light off'
+      })
+
+    status = d.value
+  })
+
+  d3.json(`${API}/tent.temperature?start=${start}end=${end}`, function(data) {
+    data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
+    MG.data_graphic({
+      data: data,
+      full_width: true,
+      height: 200,
+      area: true,
+      target: document.getElementById('tent-temperature-chart'),
+      missing_is_hidden: true,
+      show_tooltips: false,
+      markers: markers,
+      x_accessor: 'timestamp',
+      y_accessor: 'value',
+      max_y: 28,
+      min_y: 20
+    });
   });
-});
+
+  d3.json(`${API}/tent.humidity?start=${start}end=${end}`, function(data) {
+    data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
+    MG.data_graphic({
+      data: data,
+      full_width: true,
+      height: 200,
+      area: true,
+      target: document.getElementById('tent-humidity-chart'),
+      missing_is_hidden: true,
+      show_tooltips: false,
+      markers: markers,      
+      x_accessor: 'timestamp',
+      y_accessor: 'value'
+    });
+  });
+
+  d3.json(`${API}/tent.illuminance?start=${start}end=${end}`, function(data) {
+    data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
+    MG.data_graphic({
+      data: data,
+      full_width: true,
+      height: 200,
+      area: true,
+      target: document.getElementById('tent-illuminance-chart'),
+      missing_is_hidden: true,
+      show_tooltips: false,
+      markers: markers,      
+      x_accessor: 'timestamp',
+      y_accessor: 'value'
+    });
+  });
+  
+}).error((err) => {
+  console.error(err)
+})  
 
 d3.json(`${API}/reservoir.water_level?start=${start}end=${end}`, function(data) {
   data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
@@ -215,32 +258,50 @@ d3.json(`${API}/reservoir.water_level?start=${start}end=${end}`, function(data) 
   });
 });
 
-d3.json(`${API}/reservoir.ph?start=${start}end=${end}`, function(data) {
-  data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
-  MG.data_graphic({
-    data: data,
-    full_width: true,
-    height: 200,
-    area: true,
-    target: document.getElementById('reservoir-ph-chart'),
-    missing_is_hidden: true,
-    show_tooltips: false,
-    x_accessor: 'timestamp',
-    y_accessor: 'value'
-  });
-});
+App.api('/ph.up').get({
+  start: start,
+  end: end
+}).success((up) => {
+  App.api('/ph.down').get({
+    start: start,
+    end: end
+  }).success((down) => {
 
-d3.json(`${API}/tent.illuminance?start=${start}end=${end}`, function(data) {
-  data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
-  MG.data_graphic({
-    data: data,
-    full_width: true,
-    height: 200,
-    area: true,
-    target: document.getElementById('tent-illuminance-chart'),
-    missing_is_hidden: true,
-    show_tooltips: false,
-    x_accessor: 'timestamp',
-    y_accessor: 'value'
-  });
-});
+    let markers = []
+
+    up.forEach((d) => {
+      markers.push({
+	timestamp: new Date(d.timestamp),
+	label: `${d.value}mL up`
+      })
+    })
+
+    down.forEach((d) => {
+      markers.push({
+	timestamp: new Date(d.timestamp),
+	label: `${d.value}mL down`
+      })
+    })
+
+    d3.json(`${API}/reservoir.ph?start=${start}end=${end}`, function(data) {
+      data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
+      MG.data_graphic({
+	data: data,
+	full_width: true,
+	height: 200,
+	area: true,
+	markers: markers,
+	target: document.getElementById('reservoir-ph-chart'),
+	missing_is_hidden: true,
+	show_tooltips: false,
+	x_accessor: 'timestamp',
+	y_accessor: 'value'
+      });
+    });
+
+  }).error((err) => {
+    console.error(err)
+  })  
+}).error((err) => {
+  console.error(err)
+})  
