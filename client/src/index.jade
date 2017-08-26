@@ -9,12 +9,7 @@ html
     body
         .section-container
             section.section-container.section-vertical
-                section(data-label='Stage')
-                    #grow-stage.section-main ??
-                    #grow-info
-                section(data-label='System State')
-                    #system-state.section-main ??
-                section(data-label='Camera')
+                section
                     img#camera(src='https://growlab.space/cameras/visible-one/')
                     .section-actions
                         span.camera-action.active(onclick='setCamera(event, "https://growlab.space/cameras/visible-one/")') Visible
@@ -23,6 +18,13 @@ html
                         span.camera-action(onclick='setCamera(event, "https://growlab.space/cameras/bucket-2/")') 2
                         span.camera-action(onclick='setCamera(event, "https://growlab.space/cameras/bucket-3/")') 3
                         span.camera-action(onclick='setCamera(event, "https://growlab.space/cameras/bucket-4/")') 4
+                    #grow-stage.section-main ??
+                    #grow-info
+                    #logo
+                        include logo
+                    .section-meta
+                        #system-state ??
+
                 section(data-label='Log')
                     #log
 
@@ -30,11 +32,12 @@ html
                 section(data-label='Tent')
                     #tent-temperature.section-main ??
                     #tent-temperature-chart
-                    #tent-humidity.section-main ??
-                    #tent-humidity-chart
                     .section-meta
                         #ac-status(data-label='AC:') ??
                         #exhaust-status(data-label='Exhaust:') ??
+                section(data-label='Humidity')
+                    #tent-humidity.section-main ??
+                    #tent-humidity-chart
                     .section-meta-alt
                         span#svp SVP: ??
                         span#vpd VPD: ??
