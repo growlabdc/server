@@ -35,6 +35,107 @@ function updateVPD() {
   document.querySelector('#vpd').innerHTML = 'VPD: ' + data.vpd.toFixed(3)
 }
 
+function get_ph_chart(e, period) {
+  let period_start
+  let interval_length
+
+  if (e) {
+    console.log(e)
+    Elem.each(e.target.parentNode.childNodes, (e) => {
+      e.classList.remove('active')
+    })
+    e.target.classList.add('active')
+  }
+
+  switch(period) {
+    case '1w':
+      period_start = new Date().setTime(end - (7 * 24*60*60*1000)).toString()
+      interval_length = 10
+      break
+
+    case '3d':
+      period_start = new Date().setTime(end - (3 * 24*60*60*1000)).toString()
+      interval_length = 5
+      break
+
+    default:
+      period_start = start
+      interval_length = 1
+      break
+  }
+
+  App.api('/ph.up').get({
+    start: period_start,
+    end: end
+  }).success((up) => {
+    App.api('/ph.down').get({
+      start: period_start,
+      end: end
+    }).success((down) => {
+
+      let markers = []
+
+      up.forEach((d) => {
+	markers.push({
+	  timestamp: new Date(d.timestamp),
+	  label: `${d.value}mL up`
+	})
+      })
+
+      down.forEach((d) => {
+	markers.push({
+	  timestamp: new Date(d.timestamp),
+	  label: `${d.value}mL down`
+	})
+      })
+
+      d3.json(`${API}/reservoir.ph?start=${period_start}end=${end}`, function(data) {
+
+	let results = []
+	let value = 0
+
+	results.push(data[0])
+
+	for (let i=1;i<data.length;i++) {
+	  var d = data[i]
+
+	  value += d.value
+
+	  if (i % interval_length === 0) {
+	    results.push({
+	      timestamp: d.timestamp,
+	      value: parseFloat((value / interval_length).toFixed(1))
+	    })
+
+	    value = 0
+	  }
+	}
+
+	results.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
+
+	MG.data_graphic({
+	  data: results,
+	  full_width: true,
+	  height: 200,
+	  area: true,
+	  markers: markers,
+	  target: document.getElementById('reservoir-ph-chart'),
+	  show_tooltips: false,
+	  x_accessor: 'timestamp',
+	  y_accessor: 'value',
+	  y_rug: true,
+	  min_y: 4.5
+	});
+      });
+
+    }).error((err) => {
+      console.error(err)
+    })
+  }).error((err) => {
+    console.error(err)
+  })
+}
+
 var socket = io('https://growlab.space/')
 
 socket.on('bucket.4.temperature', (value) => {
@@ -202,6 +303,7 @@ App.api('/light.status').get({
       markers: markers,
       x_accessor: 'timestamp',
       y_accessor: 'value',
+      y_rug: true,
       max_y: 28,
       min_y: 20
     });
@@ -258,50 +360,4 @@ d3.json(`${API}/reservoir.water_level?start=${start}end=${end}`, function(data) 
   });
 });
 
-App.api('/ph.up').get({
-  start: start,
-  end: end
-}).success((up) => {
-  App.api('/ph.down').get({
-    start: start,
-    end: end
-  }).success((down) => {
-
-    let markers = []
-
-    up.forEach((d) => {
-      markers.push({
-	timestamp: new Date(d.timestamp),
-	label: `${d.value}mL up`
-      })
-    })
-
-    down.forEach((d) => {
-      markers.push({
-	timestamp: new Date(d.timestamp),
-	label: `${d.value}mL down`
-      })
-    })
-
-    d3.json(`${API}/reservoir.ph?start=${start}end=${end}`, function(data) {
-      data.forEach(function(d){ d.timestamp = new Date(d.timestamp) });
-      MG.data_graphic({
-	data: data,
-	full_width: true,
-	height: 200,
-	area: true,
-	markers: markers,
-	target: document.getElementById('reservoir-ph-chart'),
-	missing_is_hidden: true,
-	show_tooltips: false,
-	x_accessor: 'timestamp',
-	y_accessor: 'value'
-      });
-    });
-
-  }).error((err) => {
-    console.error(err)
-  })  
-}).error((err) => {
-  console.error(err)
-})  
+get_ph_chart()
