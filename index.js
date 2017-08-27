@@ -11,8 +11,10 @@ const fs = require('fs')
 const SerialPort = require('serialport')
 const proxy = require('express-http-proxy')
 const path = require('path')
-const app = require('express')()
-const Logger = require('logplease');
+const express = require('express')
+const Logger = require('logplease')
+
+const app = express()
 
 const http = require('http').createServer(app)
 const https = require('https').createServer({
@@ -41,7 +43,7 @@ const logger = Logger.create('server')
 
 function ensureSecure(req, res, next){
   if (req.secure){
-    return next();
+    return next()
   }
   logger.info('redirecting http connection to https')
   res.redirect('https://' + req.hostname + req.url)
@@ -54,12 +56,13 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With')
 
   if ('OPTIONS' === req.method || '/health_check' === req.path) {
-    res.sendStatus(200);
+    res.sendStatus(200)
   } else {
-    next();
+    next()
   }
 })
 app.use('/api', api)
+app.use('/', express.static(path.join(__dirname, 'client/dist')))
 app.get('/', (req, res) => {
   res.sendFile(path.resolve('client/dist/index.html'))
 })
@@ -72,7 +75,7 @@ if (config.cameras.length) {
 
 http.listen(PORT)
 https.listen(SSL_PORT, () => {
-  logger.info(`listening on *:${SSL_PORT}`);
+  logger.info(`listening on *:${SSL_PORT}`)
 })
 
 io.on('connection', (socket) => {
