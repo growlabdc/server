@@ -21,7 +21,7 @@ html
                     #grow-stage.section-main ??
                     #grow-info
                     #logo
-                        include logo
+                        img(src='https://docs.google.com/uc?id=0B-H6JCTpHFZbR2tVYzZvZjBCWUE')
                     .section-meta
                         #system-state ??
 
@@ -58,6 +58,10 @@ html
                 section(data-label='Reservoir PH')
                     #reservoir-ph.section-main ??
                     #reservoir-ph-chart
+                    .section-actions
+                        span.active(onclick='get_ph_chart(event, "12h")') 12h
+                        span(onclick='get_ph_chart(event, "3d")') 3d
+                        span(onclick='get_ph_chart(event, "1w")') 1w
                 section(data-label='Water')
                     #reservoir-water-level.section-main ??
                     #reservoir-water-level-chart
