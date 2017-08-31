@@ -32,11 +32,14 @@ const evaluate = function(sensor_item) {
 }
 
 const evaluate_humidity = function(humidity) {
-  if (!relays.light.status() && !relays.ac.status() && humidity > 60) {
+  if (!config.humidity.automate)
+    return
+
+  if (relays.ac.status())
+    return relays.exhaust.off()
+
+  if (humidity > config.humidity[grow.state].max)
     relays.exhaust.on()
-  } else {
-    relays.exhaust.off()
-  }
 }
 
 const evaluate_temperature = function(temperature) {

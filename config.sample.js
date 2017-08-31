@@ -39,6 +39,19 @@ module.exports = {
     }
   },
 
+  humidity: {
+    automate: false,
+    SEEDLING: {
+      max: 80
+    },
+    VEGETATIVE: {
+      max: 50
+    },
+    FLOWERING: {
+      max: 45
+    }
+  },
+
   sensors: {
     ph: {
       min: 0,
