@@ -38,8 +38,10 @@ const evaluate_humidity = function(humidity) {
   if (relays.ac.status())
     return relays.exhaust.off()
 
-  if (humidity > config.humidity[grow.state].max)
+  if (humidity > config.humidity[grow.stage].max)
     relays.exhaust.on()
+  else
+    relays.exhaust.off()
 }
 
 const evaluate_temperature = function(temperature) {
