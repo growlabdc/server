@@ -7,6 +7,8 @@ try {
   throw new Error('missing config file')
 }
 
+const SERIAL_TIMEOUT = 60 * 1000
+
 const fs = require('fs')
 const SerialPort = require('serialport')
 const proxy = require('express-http-proxy')
@@ -114,10 +116,27 @@ if (config.lights.automate) {
   setInterval(control.light_program, light_interval)
 }
 
+const onSerialTimeout = function() {
+  if (config.notification) {
+    sendNotification({
+      title: 'Serial Timeout',
+      body: `Last data recevied ${serial_received_at.fromNow()}`
+    })
+  }
+}
+
+let serialTimeout
+let serial_received_at
+
 serialport.pipe(serial)
 serialport.on('open', () => logger.info('serial port opened'))
 serial.on('data', (message) => {
   const item = serialParser(message)
+
+  serial_received_at = moment()
+
+  if (serialTimeout)
+    clearTimeout(serialTimeout)
 
   if (!item.type)
     return
@@ -131,4 +150,6 @@ serial.on('data', (message) => {
     control.evaluate(item)
 
   io.sockets.emit(item.data.key, item.data.value)
+
+  serialTimeout = setTimeout(onSerialTimeout, SERIAL_TIMEOUT)
 })
