@@ -142,6 +142,8 @@ serial.on('data', (message) => {
   if (!item.type)
     return
 
+  io.sockets.emit(item.data.key, item.data.value)
+
   if (!sensors.isValid(item))
     return
 
@@ -149,8 +151,6 @@ serial.on('data', (message) => {
 
   if (config.automate && !system.isOverrided())
     control.evaluate(item)
-
-  io.sockets.emit(item.data.key, item.data.value)
 
   serialTimeout = setTimeout(onSerialTimeout, SERIAL_TIMEOUT)
 })
