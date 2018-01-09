@@ -65,9 +65,13 @@ app.use((req, res, next) => {
   }
 })
 app.use('/api', api)
-app.use('/', express.static(path.join(__dirname, 'client/dist')))
+app.use('/dashboard', express.static(path.join(__dirname, 'dashboard/dist')))
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.resolve('dashboard/dist/index.html'))
+})
+app.use('/', express.static(path.join(__dirname, 'home/dist')))
 app.get('/', (req, res) => {
-  res.sendFile(path.resolve('client/dist/index.html'))
+  res.sendFile(path.resolve('home/dist/index.html'))
 })
 
 if (config.cameras.length) {

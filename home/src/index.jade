@@ -1,0 +1,49 @@
+doctype html
+html
+    head
+        title.
+            GrowLab
+        meta(name='description', content='A Washington DC based hydroponic lab, growing cannabis using a deep water culture system. ')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no')
+        link(rel='apple-touch-icon' sizes='57x57' href='/apple-icon-57x57.png')
+        link(rel='apple-touch-icon' sizes='60x60' href='/apple-icon-60x60.png')
+        link(rel='apple-touch-icon' sizes='72x72' href='/apple-icon-72x72.png')
+        link(rel='apple-touch-icon' sizes='76x76' href='/apple-icon-76x76.png')
+        link(rel='apple-touch-icon' sizes='114x114' href='/apple-icon-114x114.png')
+        link(rel='apple-touch-icon' sizes='120x120' href='/apple-icon-120x120.png')
+        link(rel='apple-touch-icon' sizes='144x144' href='/apple-icon-144x144.png')
+        link(rel='apple-touch-icon' sizes='152x152' href='/apple-icon-152x152.png')
+        link(rel='apple-touch-icon' sizes='180x180' href='/apple-icon-180x180.png')
+        link(rel='icon' type='image/png' sizes='192x192'  href='/android-icon-192x192.png')
+        link(rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png')
+        link(rel='icon' type='image/png' sizes='96x96' href='/favicon-96x96.png')
+        link(rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png')
+        link(rel='manifest' href='/manifest.json')
+        meta(name='msapplication-TileColor' content='#ffffff')
+        meta(name='msapplication-TileImage' content='/ms-icon-144x144.png')
+        meta(name='theme-color' content='#ffffff')
+        link(rel='stylesheet', href='app.css', inline='true')
+    body
+        #brand
+            img(src='https://docs.google.com/uc?id=0B-H6JCTpHFZbR2tVYzZvZjBCWUE')
+            h1
+                span.grow Grow
+                span.lab Lab
+
+        section
+            .header About
+            p GrowLab runs a community plant boarding program consistent with and in the spirit of DC's <a href="https://en.wikipedia.org/wiki/Initiative_71" target="_blank">Initiative 71</a>, which allows for the recreational use of cannabis. DC residents are able to give their seeds to be grown, harvested, and cured in our system. Participants can follow their seeds from germination to budding allowing them to enjoy their own cannabis, knowing full well where it comes from and how its been treated.
+
+            p Although our intent is to help DC residents grow recreational cannabis who otherwise don't have the means themselves (i.e. time, costs, space), our main focus is on perfecting our grow system and curing methods.
+
+        section
+            .header Upcoming Grows
+
+        section
+            .header Current Grow
+
+        section
+            .header Previous Grows
+    script(src='https://growlab.space/socket.io/socket.io.js')
+    script(src='vendor.js?__inline=true')
+    script(src='app.js?__inline=true')
