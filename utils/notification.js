@@ -1,5 +1,8 @@
 const config = require('../config')
 
+if (config.test)
+  return
+
 const Logger = require('logplease')
 const logger = Logger.create('notification')
 
