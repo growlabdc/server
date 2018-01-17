@@ -2,11 +2,20 @@ const path = require('path')
 
 module.exports = {
   level_db_path: '/tmp/level_db_data',
+  ssl: true,
+  test: false,
   key_path: path.resolve('~/private.key'),
   cert_path: path.resolve('~/growlab.crt'),
   grow_info_path: path.resolve('./grow.sample.json'),
   state_path: path.resolve('./state.json'),
   alerts_log_path: path.resolve('./alerts.log'),
+
+  maria_db_connection: {
+    host: '127.0.0.1',
+    user: 'root',
+    password: '',
+    db: 'growlab'
+  },
 
   token: 'password',
   port: 8080,
@@ -80,7 +89,7 @@ module.exports = {
     maximum: 10,
     minimum: 24,
     drain_cycle_limit: 14,
-    pump_limit:18
+    pump_limit:18,
     grow_limit: 12
   },
 

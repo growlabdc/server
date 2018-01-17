@@ -4,6 +4,7 @@ let config
 try {
   config = require('./config')
 } catch(e) {
+  console.log(e)
   throw new Error('missing config file')
 }
 
@@ -20,11 +21,13 @@ const moment = require('moment')
 const app = express()
 
 const http = require('http').createServer(app)
-const https = require('https').createServer({
-  key: fs.readFileSync(config.key_path),
-  cert: fs.readFileSync(config.cert_path)
-}, app)
-const io = require('socket.io')(https)
+if (config.ssl) {
+  const https = require('https').createServer({
+    key: fs.readFileSync(config.key_path),
+    cert: fs.readFileSync(config.cert_path)
+  }, app)
+}
+const io = require('socket.io')(config.ssl ? https : http)
 
 const relays = require('./utils/relays')
 const serialParser = require('./utils/serial_parser')
@@ -52,7 +55,8 @@ function ensureSecure(req, res, next){
   res.redirect('https://' + req.hostname + req.url)
 }
 
-app.all('*', ensureSecure)
+if (config.ssl) app.all('*', ensureSecure)
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
@@ -81,9 +85,12 @@ if (config.cameras.length) {
 }
 
 http.listen(PORT)
-https.listen(SSL_PORT, () => {
-  logger.info(`listening on *:${SSL_PORT}`)
-})
+
+if (config.ssl) {
+  https.listen(SSL_PORT, () => {
+    logger.info(`listening on *:${SSL_PORT}`)
+  })
+}
 
 io.on('connection', (socket) => {
   logger.info('socket.io connection made')

@@ -1,7 +1,10 @@
-const rpio = require('rpio')
+const config = require('../config')
 const EventEmitter = require('events').EventEmitter
 
-rpio.init({ mapping: 'gpio' })
+if (!config.test) {
+  const rpio = require('rpio')
+  rpio.init({ mapping: 'gpio' })
+}
 
 const lemdb = require('../db').lemdb
 
@@ -15,6 +18,7 @@ const save = function(key, status) {
 const relays = {
   events: events,
   setup: function() {
+    if (config.test) return
     this.ac.setup()
     this.light.setup()
     this.exhaust.setup()
