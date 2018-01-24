@@ -21,12 +21,11 @@ const moment = require('moment')
 const app = express()
 
 const http = require('http').createServer(app)
-if (config.ssl) {
-  const https = require('https').createServer({
-    key: fs.readFileSync(config.key_path),
-    cert: fs.readFileSync(config.cert_path)
-  }, app)
-}
+const https = config.ssl ? require('https').createServer({
+  key: fs.readFileSync(config.key_path),
+  cert: fs.readFileSync(config.cert_path)
+}, app) : null
+
 const io = require('socket.io')(config.ssl ? https : http)
 
 const relays = require('./utils/relays')

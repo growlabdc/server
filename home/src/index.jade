@@ -25,25 +25,69 @@ html
         link(rel='stylesheet', href='app.css', inline='true')
     body
         #brand
-            img(src='https://docs.google.com/uc?id=0B-H6JCTpHFZbR2tVYzZvZjBCWUE')
-            h1
-                span.grow Grow
-                span.lab Lab
+            img(src='/seedling.png')
 
         section
             .header About
-            p GrowLab runs a community plant boarding program consistent with and in the spirit of DC's <a href="https://en.wikipedia.org/wiki/Initiative_71" target="_blank">Initiative 71</a>, which allows for the recreational use of cannabis. DC residents are able to give their seeds to be grown, harvested, and cured in our system. Participants can follow their seeds from germination to budding allowing them to enjoy their own cannabis, knowing full well where it comes from and how its been treated.
+            p GrowLab is a community plant boarding program consistent with and in the spirit of DC's <a href="http://lims.dccouncil.us/Download/33230/B20-1064-SignedAct.pdf" target="_blank">Initiative 71</a>, which allows for the recreational use of cannabis. DC residents are able to give their seeds to be grown, harvested, and cured in our system. Participants can follow their seeds from germination to budding allowing them to enjoy their own cannabis, knowing full well where it comes from and how its been treated.
 
             p Although our intent is to help DC residents grow recreational cannabis who otherwise don't have the means themselves (i.e. time, costs, space), our main focus is on perfecting our grow system and curing methods.
 
         section
             .header Upcoming Grows
+            #upcoming
 
         section
-            .header Current Grow
+            h1 General Questions
+            strong What is a plant boarding program?
+            p In this program, DC residents come together and share in the ownership of a grow tent. We grow the seeds in our home system and participants enjoy their share of the tent at the end of the grow cycle. This program came about in spirit of DC's initiative 41, which allows for the recreational use of cannabis.
+            strong Why choose plant boarding?
+            p Plant boarding is for those who engage in recreational use of cannabis and do not have the space or time to grow their own supply. We take on the role as the grower and are responsible for housing, feeding, and caring for your plants.
+            p Many consumers are purchasing cannabis with little to no knowledge of its grow process. One major concern is pesticide contamination. Because the crop is federally illegal it isn't regulated to the standards of other agricultural crops. In our home system, there is no need for pesticidal use which allows for a fully clean production. It's also helpful to know the exact strain you're receiving to have a general idea of its affects.
 
         section
-            .header Previous Grows
+            h1 Ownership, Rules, & Registration
+            p Each grow, composed of 4 plants, is shared by community members and ownership is divided into 100 shares. Each share costs $20.
+            strong How much cannabis do I get from a single share?
+            p The amount of cannabis depends on how much the tent produces. The tent can yield anywhere from 350-550g depending on the strain and conditions in the tent. The harvest is divided based on ownership. A grow that yields 400 grams will result in each share equaling 4 grams (400 grams / 100 shares = 4 grams/share) i.e. an owner with 5 shares will receive 20 grams from a grow that yields 400 grams.
+            strong How do I register?
+            p Registration is handled by our mobile app, which will guide you through signing a smart contract, which will handle payment. A minimum of 5 shares must be registered per grow.
+            strong  Can I sell the cannabis?
+            p No. <a href="http://lims.dccouncil.us/Download/33230/B20-1064-SignedAct.pdf" target="_blank">Under current law</a>, it is unlawful to sell. However, you are allowed to transfer one ounce or less of marijuana to another person as long as: (1) no money, goods, or services are exchanged; and (2) the recipient is 21 years of age or older.
+        section
+            h1 Grow Questions
+            strong How long is the plants life from seed to harvest?
+            p The life cycle will vary depending on the strain and vegatative cycle time. It will generally be between 15-20 weeks. Following the harvest, there will be a few additional weeks for the cannabis to dry and cure.
+            strong What grow system do you use?
+            p An automated "under current" <a href="https://en.wikipedia.org/wiki/Deep_water_culture" target="_blank">deep water culture</a> hydroponic system controlled by raspberry pi using an arduino, relays, peristaltic pumps, and various sensors (ph, 1wire, ultrasonic, dht22, etc). The system is monitored by a series of visible light and infrared cameras.
+            .item
+                .primary.body
+                    .meta(data-header="Medium")
+                        div Hydroton
+                        div Reverse-Osmosis Filterd Water
+                        div Rapid Rooter
+                    .meta(data-header="Tent Size") 4 x 4
+                    .meta(data-header="Light") Nanolux 630W
+                    .meta(data-header="Nutrients")
+                        div Mills Basis A
+                        div Mills Basis B
+                        div Mills Starter R
+                        div Mills Ultimate PK
+                        div Mills Vitalize
+                        div Mills C4
+                    p
+                        a.button.rnd(href="https://github.com/growlabdc", target="_blank")
+                            img(src="/github.png")
+                            span Grow System Code
+                        a.button.rnd(href="https://growlab.space/dashboard", target="_blank")
+                            span Grow Dashboard
+            strong Do you use pesticides?
+            p No. Our indoor small batch system does not need fungucides, insecticides, or herbicides. We manage root zone health by maintaining high levels of oxygen in the water through proper aeration and temparature control.
+            strong What plant nutrients do you use?
+            p We use plant nutrients manufactured by a Dutch company called <a href="http://www.millsnutrients.com/about-mills/" target="_blank">Mills</a>.
+            blockquote "Mills is one of the first to develop bio-mineral plant nutrients utilizing the best of both synthetic and organic sources optimizing growth rates, yield, flavor, and aroma. The success of our bio mineral formula was realized only after thorough research in the field with both large greenhouse and hobbyist growers alike. These products’ unique composition allows growers to use the entire line in all grow mediums. Unlike completely synthetic nutrient lines which can build up in or on top of the soil, Mills Bio Mineral formula does not accumulate in the medium giving the grower a tremendous advantage when pushing his/her plants to the limit. Mills bio mineral fertilizers are comprised of organic (composted animal and plant remains, of course), and secondly from inorganic (chemical) substances resulting in truly innovative products that can be used with any growing style."
+            strong Can I check up on my plants?
+            p Yes. The <a href="https://growlab.space/dashboard" target="_blank">grow dashboard</a> will give you real time access to grow data (ph, lumens, humidity, temperature, etc) and video (visible light and infrared). You can also opt in to receive grow updates at the end of each stage (germination, vegatation, and flowering).
     script(src='https://growlab.space/socket.io/socket.io.js')
     script(src='vendor.js?__inline=true')
     script(src='app.js?__inline=true')

@@ -1,0 +1,19 @@
+.primary
+    img.image(src='http://www.ilovegrowingmarijuana.com/wp-content/upload_folders/ilovegrowingmarijuana.com/2015/05/life-cycle-day-90.jpg')
+    .body
+        .title.meta(data-header="Grow Name") {{=it.name}}
+        span.meta(data-header="Expected Start") 02/28/2018
+        span.meta(data-header="Remaining Shares") 85
+        span.meta.item-id(data-header="Grow No. {{=it.id}}")
+        p
+            span.meta(data-header="Type") {{=it.strain_type}}        
+            span.meta(data-header="Genetics") {{=it.strain_genetics}}
+        p
+            span.meta(data-header="Yield") {{=it.yield}}
+            span.meta(data-header="Grow Period") {{=it.grow_period}}
+        p
+            a.button(href="{{=it.leafly_link}}", target="_blank") Strain Info
+            a.button.join.disabled Register (Available Soon)
+
+.secondary
+    .description

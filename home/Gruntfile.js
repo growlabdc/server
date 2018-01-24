@@ -13,6 +13,15 @@ module.exports = function(grunt) {
       }
     },
     jade: {
+      templates: {
+	files: [{
+	  expand: true,
+	  src: ['**/*.jade'],
+	  dest: 'tmp/',
+	  cwd: 'src/html/',
+	  ext: '.html'
+	}]
+      },
       index: {
 	files: [{
 	  'tmp/index.html' : ['src/index.jade']
@@ -42,6 +51,19 @@ module.exports = function(grunt) {
 	src: [ 'tmp/index.html' ]
       }
     },
+    inline_angular_templates: {
+      index: {
+	options: {
+	  base: 'tmp',
+	  prefix: '/',
+	  selector: 'body',
+	  method: 'prepend'
+	},
+	files: {
+	  'tmp/index.html': ['tmp/**/*.html', '!tmp/index.html']
+	}
+      }
+    },
     copy: {
       index: {
 	files: [{
@@ -68,6 +90,7 @@ module.exports = function(grunt) {
 	    'modules/request.js',
 	    'modules/element.js',
 	    'node_modules/d3/build/d3.min.js',
+	    'node_modules/dot/doT.min.js',
 	    'node_modules/metrics-graphics/dist/metricsgraphics.min.js'
 	  ]
 	}
@@ -95,6 +118,7 @@ module.exports = function(grunt) {
   ])
 
   grunt.registerTask('after', [
+    'inline_angular_templates',
     'inline',
     'staticinline',
     'copy'
@@ -109,6 +133,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-contrib-concat')
   grunt.loadNpmTasks('grunt-browserify')
+  grunt.loadNpmTasks('grunt-inline-angular-templates')
 
   grunt.registerTask('default', ['base', 'after'])
 }
