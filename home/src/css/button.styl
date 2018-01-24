@@ -1,0 +1,41 @@
+@import 'variables.styl'
+@import 'nib'
+
+$success = #51b364
+$failure = #cc1100
+
+button
+.button
+    position relative
+    border 1px solid rgba(0,0,0,0.15)
+    padding 5px 20px
+    display inline-block
+    background transparent
+    background-image none
+    min-width 30px
+    min-height 20px
+    vertical-align middle
+    text-align center
+    color rgba(0,0,0,0.75)
+    font-weight 200
+    border-radius 999em
+    font-size 1em
+    text-decoration none
+
+    + button
+    + .button
+    img + span
+        margin-left 5px
+
+    img
+        width 19px
+        vertical-align middle
+    span
+        vertical-align middle
+
+    &:disabled
+    &[disabled]
+    &.disabled
+        cursor not-allowed
+        pointer-events none
+        opacity 0.2

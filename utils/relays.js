@@ -1,10 +1,10 @@
 const config = require('../config')
 const EventEmitter = require('events').EventEmitter
 
-if (!config.test) {
-  const rpio = require('rpio')
+const rpio = config.test ? null : require('rpio')
+
+if (!config.test)
   rpio.init({ mapping: 'gpio' })
-}
 
 const lemdb = require('../db').lemdb
 

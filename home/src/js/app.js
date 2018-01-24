@@ -6,9 +6,12 @@
 
   'use strict'
 
+  const BASE = location.hostname === 'localhost' ? 'http://localhost:8080/api' : '/api'
+
   return {
+    
     api: function(path) {
-      path = 'https://growlab.space/api' + path
+      path =  `${BASE}${path}`
       return {
 	get: function(params) {
 	  params = params || {}

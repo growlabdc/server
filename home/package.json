@@ -18,9 +18,11 @@
     "grunt-contrib-stylus": "^1.2.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-inline": "^0.3.6",
+    "grunt-inline-angular-templates": "^0.1.5",
     "grunt-static-inline": "^0.1.9"
   },
   "dependencies": {
+    "dot": "^1.1.2",
     "metrics-graphics": "^2.11.0"
   }
 }

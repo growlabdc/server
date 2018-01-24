@@ -1,0 +1,43 @@
+@import 'nib'
+@import 'variables.styl'
+
+.item
+    position relative
+    background white
+    margin-bottom 15px
+    padding 15px 15px 0 15px
+    box-shadow 0 1px 4px rgba(0,0,0,.04)
+    border-radius 2px
+    .join
+        color green
+        border-color green
+
+    .primary > img
+        width 100px
+        margin-right 20px
+
+    .body
+        display inline-block
+        vertical-align top
+
+    .meta
+        display inline-block
+        margin 0
+        vertical-align top
+        position relative
+        padding 12px 20px 0 0
+        min-width 120px
+        &:before
+            content attr(data-header)
+            display block
+            position absolute
+            width 100%
+            top 0
+            text-transform uppercase
+            font-size 10px
+            font-weight 500
+            color rgba(0,0,0,0.5)
+
+        &.item-id
+            absolute top 10px right 10px
+            text-align right
