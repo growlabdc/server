@@ -10,6 +10,7 @@ CREATE TABLE `grows` (
        `nutrients` text DEFAULT NULL,
        `grow_period` varchar(255) DEFAULT NULL,
        `leafly_link` varchar(255) DEFAULT NULL,
+       `image_link` varchar(255) NOT NULL,
        `started_at` datetime DEFAULT NULL,
        `ended_at` datetime DEFAULT NULL,
        `flowering_started_at` datetime DEFAULT NULL,
