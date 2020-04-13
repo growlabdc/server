@@ -9,7 +9,7 @@
     "express-http-proxy": "^1.0.6",
     "grunt": "^1.0.1",
     "jsonfile": "^3.0.1",
-    "knex": "^0.14.2",
+    "knex": "^0.20.13",
     "lem": "^1.0.0",
     "level": "^1.7.0",
     "lodash": "^4.17.4",
